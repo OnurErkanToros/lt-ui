@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { AbuseCheckRoutingModule } from './abuse-check-routing.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DialogModule } from 'primeng/dialog';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         ButtonModule,
         ToastModule,
         InputTextModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        DialogModule
     ],
     declarations: [AbuseCheckComponent],
     providers:[MessageService]

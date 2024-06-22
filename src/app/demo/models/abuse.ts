@@ -13,7 +13,7 @@ export interface AbuseCheckResponse{
     usageType?: string;
     isp?: string;
     domain?: string;
-    isTor?: string;
+    isTor?: boolean;
     totalReports?: number;
     numDistinctUsers?: number;
     lastReportedAt?: Date;

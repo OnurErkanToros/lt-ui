@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { AbuseCheckResponse } from 'src/app/demo/models/abuse';
 import { DataResult } from 'src/app/demo/models/result';
 import { AbuseService } from 'src/app/demo/service/abuse.service';
+import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
 
 @Component({
     templateUrl: './abuse-check.component.html',
@@ -12,7 +13,8 @@ import { AbuseService } from 'src/app/demo/service/abuse.service';
 export class AbuseCheckComponent {
     ipAddress: string = '';
     loading: boolean = false;
-    abuseCheckResponse: AbuseCheckResponse;
+    abuseCheckResponse: AbuseCheckResponse = {};
+    visible=false;
     constructor(
         private messageService: MessageService,
         private abuseService: AbuseService
@@ -28,7 +30,7 @@ export class AbuseCheckComponent {
                     next: (data: DataResult<AbuseCheckResponse>) => {
                         if (data.success) {
                             this.abuseCheckResponse = data.data;
-                            console.log(data)
+                            this.visible=true;
                         } else {
                             if (data.message) {
                                 this.messageService.add({
@@ -72,5 +74,8 @@ export class AbuseCheckComponent {
             }
         }
         return true;
+    }
+    getCountryNameByCountryCode(countryCode: string) {
+        return getCountryNameByCountryCode(countryCode);
     }
 }

@@ -34,4 +34,58 @@
         </div>
     </div>
 
+    <p-dialog header="{{abuseCheckResponse.ipAddress}} Bilgileri" [modal]="true" [(visible)]="visible" draggable="false" maximizable="true" >
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>IP Adresi:</strong></label>
+            <span>{{abuseCheckResponse.ipAddress}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>IP Versiyon:</strong></label>
+            <span>{{abuseCheckResponse.ipVersion}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>İnternet Sağlayıcı:</strong></label>
+            <span>{{abuseCheckResponse.isp}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Ülke:</strong></label>
+            <span>{{getCountryNameByCountryCode(abuseCheckResponse.countryCode)}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Toplam Raporlama Sayısı:</strong></label>
+            <span>{{abuseCheckResponse.totalReports}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Kaç Farklı Kişi Raporladı:</strong></label>
+            <span>{{abuseCheckResponse.numDistinctUsers}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Abuse Risk Puanı:</strong></label>
+            <span>{{abuseCheckResponse.abuseConfidenceScore}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Domain:</strong></label>
+            <span>{{abuseCheckResponse.domain}}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Public mi?:</strong></label>
+            <span>{{abuseCheckResponse.isPublic === true? 'Evet' : 'Hayır' }}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Tor mu?:</strong></label>
+            <span>{{abuseCheckResponse.isTor === true? 'Evet' : 'Hayır' }}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Abuse Beyaz Listesinde mi?:</strong></label>
+            <span>{{abuseCheckResponse.isWhitelisted === true? 'Evet' : 'Hayır' }}</span>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem"><strong>Abuse Beyaz Listesinde mi?:</strong></label>
+            <span>{{abuseCheckResponse.isWhitelisted === true? 'Evet' : 'Hayır' }}</span>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Listeye Ekle" (click)="visible = false" />
+        </div>
+    </p-dialog>
+
 </p-card>

@@ -4,8 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AbuseBlackListResponse } from 'src/app/demo/models/abuse';
 import { AbuseService } from 'src/app/demo/service/abuse.service';
-import { countries } from 'src/app/demo/api/countries';
-
+import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
 @Component({
     templateUrl: './abuse-blacklist.component.html',
     providers: [MessageService]
@@ -56,11 +55,6 @@ export class AbuseBlacklistComponent implements OnInit {
         )
     }
     getCountryNameByCountryCode(countryCode: string) {
-        const country = countries.find(c => c.countryCode === countryCode);
-        if (country === undefined) {
-            return countryCode;
-        } else {
-            return country.countryName || countryCode;
-        }
+        return getCountryNameByCountryCode(countryCode);
     }
 }
