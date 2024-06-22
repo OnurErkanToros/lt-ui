@@ -15,6 +15,7 @@ export interface ServerResponse{
     port?:number;
     remoteFilePath:string;
     fileName?:string;
-    creDate?:Date;
-    creUser?:string;
+    createdAt?:Date;
+    createdBy?:string;
+    active?:string;
 }

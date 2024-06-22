@@ -7,7 +7,6 @@ import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
 
 @Component({
     templateUrl: './abuse-check.component.html',
-    styleUrls: ['./abuse-check.style.css'],
     providers: [MessageService],
 })
 export class AbuseCheckComponent {

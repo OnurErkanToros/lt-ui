@@ -20,7 +20,7 @@ export class ServerService {
         return this.httpclient.get<Result[]>(this.apiUrl+"sendBlockConf",{headers:this.authService.getHeaders()});
     }
     getAllServer():Observable<DataResult<ServerResponse[]>>{
-        return this.httpclient.get<DataResult<ServerResponse[]>>(this.apiUrl+"getAll",{headers:this.authService.getHeaders()});
+        return this.httpclient.get<DataResult<ServerResponse[]>>(this.apiUrl+"get-all",{headers:this.authService.getHeaders()});
     }
     deleteServerById(id:number):Observable<Result>{
         return this.httpclient.delete<Result>(this.apiUrl+"delete/"+id,{headers:this.authService.getHeaders()});

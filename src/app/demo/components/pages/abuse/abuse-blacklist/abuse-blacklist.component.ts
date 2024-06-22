@@ -1,10 +1,10 @@
 import { Page } from './../../../../models/page';
-import { TablePageEvent } from 'primeng/table';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AbuseBlackListResponse } from 'src/app/demo/models/abuse';
 import { AbuseService } from 'src/app/demo/service/abuse.service';
 import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
+import { DataResult } from 'src/app/demo/models/result';
 @Component({
     templateUrl: './abuse-blacklist.component.html',
     providers: [MessageService]
@@ -17,6 +17,7 @@ export class AbuseBlacklistComponent implements OnInit {
     page:number=0;
     rows=1;
     totalRecords=0;
+    loading=false;
     constructor(private abuseService: AbuseService, private messageService: MessageService) { }
 
     ngOnInit() {
@@ -32,13 +33,27 @@ export class AbuseBlacklistComponent implements OnInit {
         console.log(this.selectedBlackList)
     }
     loadData(){
+        this.loading=true;
         this.abuseService.getAllBlackList(this.page,this.size)
-        .subscribe(data=>{
-            if(data.success){
-                this.blacklist=data.data.content;
-                this.totalRecords=data.data.totalElements;
-            }else{
-                this.messageService.add({severity:'error',detail:data.message});
+        .subscribe({
+            next:(data:DataResult<Page<AbuseBlackListResponse>>) => {
+                if(data.success){
+                    this.blacklist=data.data.content;
+                    this.totalRecords=data.data.totalElements;
+                }else{
+                    this.messageService.add({
+                        severity:'error',
+                        detail:data.message
+                    })
+                }
+                this.loading=false;
+            },
+            error:(error)=>{
+                this.messageService.add({
+                    severity:'error',
+                    detail:error
+                })
+                this.loading=false;
             }
         });
     }
