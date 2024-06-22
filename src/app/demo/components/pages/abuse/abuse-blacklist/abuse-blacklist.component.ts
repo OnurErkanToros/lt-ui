@@ -1,108 +1,66 @@
+import { Page } from './../../../../models/page';
+import { TablePageEvent } from 'primeng/table';
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
 import { MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
 import { AbuseBlackListResponse } from 'src/app/demo/models/abuse';
 import { AbuseService } from 'src/app/demo/service/abuse.service';
+import { countries } from 'src/app/demo/api/countries';
 
 @Component({
     templateUrl: './abuse-blacklist.component.html',
     providers: [MessageService]
 })
 export class AbuseBlacklistComponent implements OnInit {
-
-    productDialog: boolean = false;
-
-    deleteProductDialog: boolean = false;
-
-    deleteProductsDialog: boolean = false;
-    black:AbuseBlackListResponse={};
-    blackList: AbuseBlackListResponse[]=[];
-
-    selectedBlack: AbuseBlackListResponse[] = [];
-
-    submitted: boolean = false;
-
-    cols: any[] = [];
-
-    statuses: any[] = [];
-
-    rowsPerPageOptions = [5, 10, 20];
-
+    blacklist : AbuseBlackListResponse[]=[];
+    selectedBlackList :AbuseBlackListResponse[]=[];
+    first=0;
+    size:number=10;
+    page:number=0;
+    rows=1;
+    totalRecords=0;
     constructor(private abuseService: AbuseService, private messageService: MessageService) { }
 
     ngOnInit() {
-        this.abuseService.getAllBlackList().subscribe(
-            (response)=>{
-                this.blackList=response.data;
+        this.loadData();
+    }
+    onPageChange(event) {
+        this.first=event.first;
+        this.page = event.page;
+        this.size = event.rows;
+        this.loadData();
+    }
+    selectionChange(event){
+        console.log(this.selectedBlackList)
+    }
+    loadData(){
+        this.abuseService.getAllBlackList(this.page,this.size)
+        .subscribe(data=>{
+            if(data.success){
+                this.blacklist=data.data.content;
+                this.totalRecords=data.data.totalElements;
+            }else{
+                this.messageService.add({severity:'error',detail:data.message});
             }
-        )
+        });
     }
-    updateBlackList(){
-        this.abuseService.refreshBlackList().subscribe(
-            (response)=>{
-                console.log(response)
-                if(response.success){
-                    this.messageService.add({severity:'success',detail:response.message})
-                }
+    updateBlackList(event:MouseEvent){
+        this.abuseService.refreshBlackList()
+        .subscribe(data=>{
+            if(data.success){
+                this.loadData();
+                this.messageService.add({severity:"success",detail:data.message})
+            }else{
+                this.messageService.add({severity:'error',detail:data.message})
             }
-        )
-    }
-
-    openNew() {
-        this.submitted = false;
-        this.productDialog = true;
-    }
-
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
-    }
-
-    editProduct(product: Product) {
-        this.productDialog = true;
-    }
-
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-    }
-
-    confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    }
-
-    confirmDelete() {
-        this.deleteProductDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-    }
-
-    hideDialog() {
-        this.productDialog = false;
-        this.submitted = false;
-    }
-
-    saveProduct() {
-        this.submitted = true;
-
-
-    }
-
-    findIndexById(id: string): number {
-        let index = -1;
-
-        return index;
-    }
-
-    createId(): string {
-        let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        return id;
+        )
     }
-
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    getCountryNameByCountryCode(countryCode: string) {
+        const country = countries.find(c => c.countryCode === countryCode);
+        if (country === undefined) {
+            return countryCode;
+        } else {
+            return country.countryName || countryCode;
+        }
     }
 }

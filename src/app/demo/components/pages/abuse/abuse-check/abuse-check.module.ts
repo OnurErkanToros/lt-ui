@@ -1,42 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-import { TableModule } from 'primeng/table';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ButtonModule } from 'primeng/button';
-import { RippleModule } from 'primeng/ripple';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { RatingModule } from 'primeng/rating';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { DropdownModule } from 'primeng/dropdown';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { DialogModule } from 'primeng/dialog';
-import { AbuseCheckRoutingModule } from './abuse-check-routing.module';
 import { AbuseCheckComponent } from './abuse-check.component';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { AbuseCheckRoutingModule } from './abuse-check-routing.module';
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 
 @NgModule({
     imports: [
-        CommonModule,
         AbuseCheckRoutingModule,
-        TableModule,
-        FileUploadModule,
+        CommonModule,
         FormsModule,
+        CardModule,
         ButtonModule,
-        RippleModule,
         ToastModule,
-        ToolbarModule,
-        RatingModule,
         InputTextModule,
-        InputTextareaModule,
-        DropdownModule,
-        RadioButtonModule,
-        InputNumberModule,
-        DialogModule
+        ProgressSpinnerModule
     ],
-    declarations: [AbuseCheckComponent]
+    declarations: [AbuseCheckComponent],
+    providers:[MessageService]
 })
 export class AbuseCheckModule { }

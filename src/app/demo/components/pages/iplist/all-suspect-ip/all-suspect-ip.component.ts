@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './all-suspect-ip.component.html',
-  styleUrl: './all-suspect-ip.component.scss'
 })
 export class AllSuspectIpComponent {
 
