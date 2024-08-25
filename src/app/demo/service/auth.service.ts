@@ -60,7 +60,7 @@ export class AuthService {
     }
 
     getHeaders(): HttpHeaders {
-        this.loginAndToken({username:'onur',password:'1234'});
+        this.loginAndToken({username:'onurerkan',password:'1234'});
         let token ="Bearer "+localStorage.getItem(this.TOKEN_KEY);
         if (token) {
             return new HttpHeaders({

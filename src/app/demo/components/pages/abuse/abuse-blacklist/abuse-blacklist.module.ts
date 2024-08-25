@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     imports: [
@@ -18,7 +19,7 @@ import { ButtonModule } from 'primeng/button';
         PaginatorModule,
         CardModule,
         ButtonModule,
-
+        ProgressSpinnerModule
     ],
     declarations: [AbuseBlacklistComponent],
     providers:[MessageService]

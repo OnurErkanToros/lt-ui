@@ -47,9 +47,21 @@ export class AbuseCheckComponent {
                     },
                     error: (error) => {
                         this.loading = false;
+                        let errorMsg = 'Bir hata oluştu.';
+                        if (error.error instanceof ErrorEvent) {
+                            // Client-side error
+                            errorMsg = `Hata: ${error.error.message}`;
+                        } else {
+                            // Server-side error
+                            if (error.error && error.error.message) {
+                                errorMsg = `Hata: ${error.error.message}`;
+                            } else if (error.status) {
+                                errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
+                            }
+                        }
                         this.messageService.add({
                             severity: 'error',
-                            detail: error,
+                            detail: errorMsg
                         });
                     },
                 });

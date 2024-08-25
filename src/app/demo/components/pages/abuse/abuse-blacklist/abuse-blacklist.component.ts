@@ -49,15 +49,28 @@ export class AbuseBlacklistComponent implements OnInit {
                 this.loading=false;
             },
             error:(error)=>{
-                this.messageService.add({
-                    severity:'error',
-                    detail:error
-                })
+                let errorMsg = 'Bir hata oluştu.';
+                    if (error.error instanceof ErrorEvent) {
+                        // Client-side error
+                        errorMsg = `Hata: ${error.error.message}`;
+                    } else {
+                        // Server-side error
+                        if (error.error && error.error.message) {
+                            errorMsg = `Hata: ${error.error.message}`;
+                        } else if (error.status) {
+                            errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
+                        }
+                    }
+                    this.messageService.add({
+                        severity: 'error',
+                        detail: errorMsg
+                    });
                 this.loading=false;
             }
         });
     }
     updateBlackList(event:MouseEvent){
+        this.loading=true;
         this.abuseService.refreshBlackList()
         .subscribe(data=>{
             if(data.success){
@@ -66,6 +79,7 @@ export class AbuseBlacklistComponent implements OnInit {
             }else{
                 this.messageService.add({severity:'error',detail:data.message})
             }
+            this.loading=false;
         }
         )
     }

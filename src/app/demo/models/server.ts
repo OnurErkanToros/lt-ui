@@ -4,10 +4,11 @@ export interface ServerRequest{
     username?:string;
     password?:string;
     port?:number;
-    remoteFilePath:string;
+    remoteFilePath?:string;
     fileName?:string;
 }
 export interface ServerResponse{
+    id:number;
     name?:string;
     url?:string;
     username?:string;

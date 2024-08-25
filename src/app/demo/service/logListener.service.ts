@@ -1,3 +1,4 @@
+import { LogListenerStatus } from './../models/logListener';
 import { AbuseBlackListResponse, AbuseCheckRequest, AbuseCheckResponse } from '../models/abuse';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -10,12 +11,18 @@ import { AuthService } from './auth.service';
     providedIn: 'root',
 })
 export class LogListenerService {
-    private apiUrl = environment.apiUrl + 'server/';
-    constructor(private httpclient: HttpClient,private authService:AuthService) {}
-    logListenerStart():Observable<Result>{
-        return this.httpclient.post<Result>(this.apiUrl,{headers:this.authService.getHeaders()});
+    private apiUrl = environment.apiUrl + 'log-listener/';
+    private options = {
+        headers:this.authService.getHeaders(),
     }
-    logListenerStop():Observable<Result>{
-        return this.httpclient.post<Result>(this.apiUrl,{headers:this.authService.getHeaders()})
+    constructor(private httpclient: HttpClient,private authService:AuthService) {}
+    start():Observable<Result>{
+        return this.httpclient.post<Result>(this.apiUrl+'start',null,this.options);
+    }
+    stop():Observable<Result>{
+        return this.httpclient.post<Result>(this.apiUrl+'stop',null,this.options);
+    }
+    status():Observable<DataResult<LogListenerStatus>>{
+        return this.httpclient.get<DataResult<LogListenerStatus>>(this.apiUrl+'status',this.options);
     }
 }

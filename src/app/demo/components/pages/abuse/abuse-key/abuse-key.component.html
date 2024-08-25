@@ -1,0 +1,122 @@
+<p-toast />
+<p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+        <p-button
+            pRipple
+            severity="success"
+            label="Ekle"
+            icon="pi pi-plus"
+            class="mr-2"
+            (click)="openNewServerDialog()"
+        />
+        <p-button
+            pRipple
+            severity="danger"
+            label="Seçili Olanları Sil"
+            icon="pi pi-trash"
+            (click)="deleteSelectedServers()"
+            class="mr-2"
+            [disabled]="!selectedServers || !selectedServers.length"
+        />
+    </ng-template>
+</p-toolbar>
+
+<p-table
+    #dt
+    [value]="abuseKeys"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [rowHover]="true"
+    dataKey="id"
+>
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Sunucu Yönetimi</h5>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Key</th>
+            <th>Durum</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Oluşturan</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-key>
+        <tr>
+            
+            <td>
+                {{ key.abuseKey }}
+            </td>
+            
+            <td>
+                {{ key.isActive ? 'Aktif':'Deaktif' }}
+            </td>
+            {{
+                key.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
+            }}
+            <td>
+                {{ key.createdBy }}
+            </td>
+            <td>
+                <p-button
+                    pRipple
+                    icon="pi pi-pencil"
+                    class="mr-2"
+                    [rounded]="true"
+                    [outlined]="true"
+                    severity="success"
+                    disable="true"
+                    (click)="editProduct(product)"
+                />
+                <p-button
+                    pRipple
+                    icon="pi pi-trash"
+                    severity="danger"
+                    [rounded]="true"
+                    [outlined]="true"
+                    disable="true"
+                    (click)="deleteProduct(product)"
+                />
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Kayıtlı {{ servers ? servers.length : 0 }} sunucu var.
+        </div>
+    </ng-template>
+</p-table>
+
+<p-dialog
+    header="Yeni Sunucu Ekle"
+    [modal]="true"
+    [(visible)]="visible"
+    [style]="{ width: '25rem' }"
+    draggable="false"
+>
+    <form #form="ngForm" (ngSubmit)="addNewAbuseKey(form)">
+        <span class="p-text-secondary block mb-5"
+            >Sunucu bilgilerini girin</span
+        >
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="address" class="font-semibold w-6rem">Adresi*</label>
+            <input
+                pInputText
+                id="address"
+                class="flex-auto"
+                required
+                name="address"
+                [(ngModel)]="abuseRequest.abuseKey"
+            />
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="İptal"
+                severity="secondary"
+                (click)="visible = false"
+            />
+            <p-button label="Ekle" type="submit" />
+        </div>
+    </form>
+</p-dialog>

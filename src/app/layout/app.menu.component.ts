@@ -39,6 +39,11 @@ export class AppMenuComponent implements OnInit {
                                 label: 'Sorgulama',
                                 icon: 'pi pi-fw pi-search',
                                 routerLink: ['/pages/abuse/check']
+                            },
+                            {
+                                label: 'Key',
+                                icon: 'pi pi-fw pi-search',
+                                routerLink: ['/pages/abuse/key']
                             }
                         ]
                     },
@@ -47,9 +52,19 @@ export class AppMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-eye',
                         items:[
                             {
+                                label: 'Log Dinleyici Ayarları',
+                                icon: 'pi pi-fw pi-ban',
+                                routerLink: ['/pages/log-listener/listener-settings']
+                            },
+                            {
+                                label: 'Log Dinleyici Pattern',
+                                icon: 'pi pi-fw pi-ban',
+                                routerLink: ['/pages/log-listener/listener-pattern']
+                            },
+                            {
                                 label: 'Yakalananlar',
                                 icon: 'pi pi-fw pi-ban',
-                                routerLink: ['/pages/loglistener/caught']
+                                routerLink: ['/pages/log-listener/listener-caughts']
                             }
                         ]
                     },

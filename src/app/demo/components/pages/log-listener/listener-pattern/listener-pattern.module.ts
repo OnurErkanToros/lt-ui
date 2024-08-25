@@ -1,8 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ServerComponent } from './server.component';
+import { CommonModule } from '@angular/common';
+import { ListenerPatternComponent } from './listener-pattern.component';
 import { DataViewModule } from 'primeng/dataview';
-import { ServerRoutingModule } from './server-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -10,20 +9,21 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { ListenerPatternRoutingModule } from './listener-pattern-routing.module';
 
 @NgModule({
     imports: [
         CommonModule,
         DataViewModule,
-        ServerRoutingModule,
+        ListenerPatternRoutingModule,
         ButtonModule,
         ToastModule,
         ToolbarModule,
         TableModule,
         DialogModule,
         InputTextModule,
-        FormsModule
+        FormsModule,
     ],
-    declarations: [ServerComponent],
+    declarations: [ListenerPatternComponent],
 })
-export class ServerModule {}
+export class ListenerPatternModule {}
