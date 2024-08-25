@@ -1,0 +1,108 @@
+<p-toast />
+<p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+        <p-button
+            pRipple
+            severity="success"
+            label="Ekle"
+            icon="pi pi-plus"
+            class="mr-2"
+            (click)="openNewServerDialog()"
+        />
+        <p-button
+            pRipple
+            severity="danger"
+            label="Seçili Olanları Sil"
+            icon="pi pi-trash"
+            (click)="deleteSelectedServers()"
+            class="mr-2"
+            [disabled]="!selectedSuspectIp || !selectedSuspectIp.length"
+        />
+    </ng-template>
+    <ng-template pTemplate="right">
+        <p-button
+            pRipple
+            severity="warning"
+            label="Seçili Olanlara Listeleri Gönder"
+            icon="pi pi-upload"
+            [disabled]="!selectedSuspectIp || !selectedSuspectIp.length"
+        />
+    </ng-template>
+</p-toolbar>
+
+<p-table
+    #dt
+    [value]="suspectIpList"
+    [rows]="6"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    paginator="true"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="{totalRecords} kayıttan {first} - {last} arası gösteriliyor"
+    [showCurrentPageReport]="true"
+    [(selection)]="selectedSuspectIp"
+>
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Yakalananlar IP Listesi</h5>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 4rem">
+                <p-tableHeaderCheckbox />
+            </th>
+            <th>IP Adresi</th>
+            <th>Hangi hosttan gelmiş</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Banlanmış mı?</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-suspect>
+        <tr>
+            <td>
+                <p-tableCheckbox [value]="suspect" />
+            </td>
+            <td>
+                {{ suspect.ip }}
+            </td>
+            <td>
+                {{ suspect.host }}
+            </td>
+            <td>
+                {{
+                    suspect.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
+                }}
+            </td>
+            <td>
+                {{ suspect.isBanned }}
+            </td>
+
+            <td>
+                <p-button
+                    pRipple
+                    icon="pi pi-pencil"
+                    class="mr-2"
+                    [rounded]="true"
+                    [outlined]="true"
+                    severity="success"
+                    (click)="editProduct(product)"
+                />
+                <p-button
+                    pRipple
+                    icon="pi pi-trash"
+                    severity="danger"
+                    [rounded]="true"
+                    [outlined]="true"
+                    (click)="deleteProduct(product)"
+                />
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Kayıtlı {{ servers ? servers.length : 0 }} sunucu var.
+        </div>
+    </ng-template>
+</p-table>

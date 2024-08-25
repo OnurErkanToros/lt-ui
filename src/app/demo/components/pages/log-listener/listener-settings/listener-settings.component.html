@@ -1,0 +1,17 @@
+<p-toast/>
+<div class="progress-spinner" *ngIf="loading">
+    <p-progressSpinner
+        styleClass="w-4rem h-4rem "
+        strokeWidth="7"
+        animationDuration=".5s"
+        >
+    </p-progressSpinner>
+</div>
+<p-card header="Log Listener Anahtarı">
+    <p-toggleButton
+    [(ngModel)]="checked"
+    onLabel="Açık"
+    offLabel="Kapalı"
+    (onChange)="onChange()"
+    />
+</p-card>

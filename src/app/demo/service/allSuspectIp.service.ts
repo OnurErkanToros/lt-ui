@@ -1,7 +1,7 @@
 import {
     AllSuspectIpRequest,
     AllSuspectIpResponse,
-} from './../models/allSuspectIp';
+} from '../models/suspectIp';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataResult } from '../models/result';

@@ -30,5 +30,6 @@ export interface AbuseDbKeyRequest{
 export interface AbuseDbKeyResponse{
     abuseKey?:string;
     createdAt?:Date;
+    createdBy?:string;
     isActive?:boolean;
 }
