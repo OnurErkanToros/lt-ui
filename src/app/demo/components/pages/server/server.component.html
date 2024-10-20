@@ -84,11 +84,13 @@
                 {{ server.fileName }}
             </td>
             <td>
-                {{ server.active }}
+                {{ server.active ? 'Aktif':'Deaktif' }}
             </td>
-            {{
-                server.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
-            }}
+            <td>
+                {{
+                    server.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
+                }}
+            </td>
             <td>
                 {{ server.createdBy }}
             </td>

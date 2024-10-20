@@ -15,7 +15,7 @@
     </p>
     <div class="p-1 flex justify-content-end align-items-end flex-wrap">
         <p-button label="Karalisteyi Güncelle" [raised]="true" severity="success" class="pr-1" (onClick)="updateBlackList($event)"/>
-        <p-button label="Kendi Karalistene Ekle" [raised]="true" severity="info" class="pr-1"/>
+        <p-button label="Yenileri Transfere Hazırla" [raised]="true" severity="info" class="pr-1" (onClick)="prepareBlackListForBanning()" [disabled]="countBlacklistNewStatus==0"/>
     </div>
 
     <p-table
@@ -31,6 +31,9 @@
                 <th>IP Adresi</th>
                 <th>Son Raporlanma Tarihi</th>
                 <th>Ülke</th>
+                <th>Durum</th>
+                <th>Durum Güncellenme</th>
+                <th>Durum Güncelleyen</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-black>
@@ -43,6 +46,9 @@
                     }}
                 </td>
                 <td>{{ getCountryNameByCountryCode(black.countryCode) }}</td>
+                <td>{{black.status}}</td>
+                <td>{{black.statusAt}}</td>
+                <td>{{black.statusBy}}</td>
             </tr>
         </ng-template>
     </p-table>

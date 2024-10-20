@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { dA } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
 import { AbuseCheckResponse } from 'src/app/demo/models/abuse';
 import { DataResult } from 'src/app/demo/models/result';
@@ -39,7 +40,7 @@ export class AbuseCheckComponent {
                             } else {
                                 this.messageService.add({
                                     severity: 'error',
-                                    detail: 'Sorgulama başarısız bir sorun var.',
+                                    detail: 'Sorgulama başarısız.'
                                 });
                             }
                         }
@@ -72,7 +73,37 @@ export class AbuseCheckComponent {
             });
         }
     }
-    validateIPAddress(): boolean {
+
+    prepareCheckIpForBan(ip:string){
+        this.loading=true
+        this.abuseService.prepareCheckIpForBanning({ip:ip}).subscribe(
+            {
+                next:data=>{
+                    if(data.success){
+                        this.messageService.add({
+                            detail:'Banlanacaklar listesine eklendi.',
+                            severity:'success'
+                        })
+                    }else{
+                        this.messageService.add({
+                            detail:'Banlanacaklar listesine eklenemedi. '+data.message,
+                            severity:'error'
+                        })
+                    };
+                    this.loading=false
+                },
+                error:error=>{
+                    this.messageService.add({
+                        detail:error.error,
+                        severity:'error' 
+                    })
+                    this.loading=false
+                }
+            }
+        );
+        this.visible=false;
+    }
+    private validateIPAddress(): boolean {
         const ipPattern = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
         if (!ipPattern.test(this.ipAddress)) {
             return false;

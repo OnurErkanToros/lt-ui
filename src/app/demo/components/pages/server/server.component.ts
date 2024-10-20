@@ -11,7 +11,6 @@ import { Form, NgForm } from '@angular/forms';
   templateUrl: './server.component.html',
 })
 export class ServerComponent implements OnInit{
-    products!: Product[];
     servers:ServerResponse[]=[];
     selectedServers:ServerResponse[]=[];
     loading=false;

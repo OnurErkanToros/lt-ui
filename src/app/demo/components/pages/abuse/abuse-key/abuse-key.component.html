@@ -7,16 +7,7 @@
             label="Ekle"
             icon="pi pi-plus"
             class="mr-2"
-            (click)="openNewServerDialog()"
-        />
-        <p-button
-            pRipple
-            severity="danger"
-            label="Seçili Olanları Sil"
-            icon="pi pi-trash"
-            (click)="deleteSelectedServers()"
-            class="mr-2"
-            [disabled]="!selectedServers || !selectedServers.length"
+            (click)="openNewAbuseKeyDialog()"
         />
     </ng-template>
 </p-toolbar>
@@ -30,7 +21,7 @@
 >
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-            <h5 class="m-0">Sunucu Yönetimi</h5>
+            <h5 class="m-0">Abuse Key Yönetimi</h5>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -52,9 +43,12 @@
             <td>
                 {{ key.isActive ? 'Aktif':'Deaktif' }}
             </td>
-            {{
-                key.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
-            }}
+            <td>
+                {{
+                    key.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
+                }}
+            </td>
+            
             <td>
                 {{ key.createdBy }}
             </td>
@@ -83,13 +77,13 @@
     </ng-template>
     <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-            Kayıtlı {{ servers ? servers.length : 0 }} sunucu var.
+            Kayıtlı {{ abuseKeys ? abuseKeys.length : 0 }} key var.
         </div>
     </ng-template>
 </p-table>
 
 <p-dialog
-    header="Yeni Sunucu Ekle"
+    header="Yeni Key Ekle"
     [modal]="true"
     [(visible)]="visible"
     [style]="{ width: '25rem' }"
@@ -97,10 +91,10 @@
 >
     <form #form="ngForm" (ngSubmit)="addNewAbuseKey(form)">
         <span class="p-text-secondary block mb-5"
-            >Sunucu bilgilerini girin</span
+            >Key giriniz</span
         >
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="address" class="font-semibold w-6rem">Adresi*</label>
+            <label for="address" class="font-semibold w-6rem">Key</label>
             <input
                 pInputText
                 id="address"

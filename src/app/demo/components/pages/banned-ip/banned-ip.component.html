@@ -1,0 +1,136 @@
+<p-toast />
+<div class="progress-spinner" *ngIf="loading">
+    <p-progressSpinner
+        styleClass="w-4rem h-4rem "
+        strokeWidth="7"
+        animationDuration=".5s"
+        >
+    </p-progressSpinner>
+</div>
+<p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+        <p-button
+            pRipple
+            severity="danger"
+            label="Seçili Olanları Sil"
+            icon="pi pi-trash"
+            (click)="deleteSelectedServers()"
+            class="mr-2"
+            [disabled]="!selectedBannedIpList || !selectedBannedIpList.length"
+        />
+    </ng-template>
+    <ng-template pTemplate="right">
+        <p-button
+            pRipple
+            severity="warning"
+            label="Seçili Olanlara Listeleri Gönder"
+            icon="pi pi-upload"
+            [disabled]="!selectedServers || !selectedServers.length"
+        />
+    </ng-template>
+</p-toolbar>
+
+<p-card header="Ban Yönetimi">
+    <p>
+        Bu ekrandan banlanmaya hazır listeye eklenmiş fakat henüz sunuculara transfer edilmemiş ve transfer edilmiş ip adresleri görüntüleyebilirsiniz.
+    </p>
+<p-table
+    #dt
+    [value]="bannedIpList"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [rowHover]="true"
+    dataKey="id"
+    [(selection)]="selectedBannedIpList"
+>
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Banlanmışlar listesi</h5>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 4rem">
+                <p-tableHeaderCheckbox />
+            </th>
+            <th>ID</th>
+            <th>IP</th>
+            <th>IP Tipi</th>
+            <th>Sunuculara Transfer Edildi Mi?</th>
+            <th>Transfer Zamanı</th>
+            <th>Transfer Eden</th>
+            <th>Listeye Eklenme Zamanı</th>
+            <th>Listeye Ekleyen</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-bannedIp>
+        <tr>
+            <td>
+                <p-tableCheckbox [value]="server" />
+            </td>
+            <td>
+                {{ bannedIp.id }}
+            </td>
+            <td>
+                {{ bannedIp.ip }}
+            </td>
+            <td>
+                {{ bannedIp.ipType }}
+            </td>
+            <td>
+                {{ bannedIp.transferred? 'Evet':'Hayır' }}
+            </td>
+            <td>
+                {{ bannedIp.transferredAt | date : "dd MMMM yyyy, EEEE HH:mm" }}
+            </td>
+            <td>
+                {{ bannedIp.transferredBy }}
+            </td>
+            <td>
+                {{
+                    bannedIp.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
+                }}
+            </td>
+            <td>
+                {{ bannedIp.createdBy }}
+            </td>
+            <td>
+                <p-button
+                    pRipple
+                    icon="pi pi-pencil"
+                    class="mr-2"
+                    [rounded]="true"
+                    [outlined]="true"
+                    severity="success"
+                    disable="true"
+                    (click)="editProduct(product)"
+                />
+                <p-button
+                    pRipple
+                    icon="pi pi-trash"
+                    severity="danger"
+                    [rounded]="true"
+                    [outlined]="true"
+                    disable="true"
+                    (click)="deleteProduct(product)"
+                />
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Kayıtlı {{ bannedIpList ? bannedIpList.length : 0 }} sunucu var.
+        </div>
+    </ng-template>
+</p-table>
+<p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="size"
+        [totalRecords]="totalRecords"
+        [showCurrentPageReport]="true"
+        [showJumpToPageDropdown]="false"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+/>
+</p-card>

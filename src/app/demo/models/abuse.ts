@@ -23,6 +23,9 @@ export interface AbuseBlackListResponse {
     ipAddress?: string;
     lastReportedAt?: Date;
     countryCode?: string;
+    status?:string;
+    statusBy?:string;
+    statusAt?:Date;
 }
 export interface AbuseDbKeyRequest{
     abuseKey?:string;

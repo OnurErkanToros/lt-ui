@@ -1,30 +1,15 @@
 <p-toast />
 <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
-        <p-button
-            pRipple
-            severity="success"
-            label="Ekle"
-            icon="pi pi-plus"
-            class="mr-2"
-            (click)="openNewServerDialog()"
-        />
-        <p-button
-            pRipple
-            severity="danger"
-            label="Seçili Olanları Sil"
-            icon="pi pi-trash"
-            (click)="deleteSelectedServers()"
-            class="mr-2"
-            [disabled]="!selectedSuspectIp || !selectedSuspectIp.length"
-        />
+       
     </ng-template>
     <ng-template pTemplate="right">
         <p-button
             pRipple
             severity="warning"
-            label="Seçili Olanlara Listeleri Gönder"
+            label="Seçili Olanları Transfere Hazırla"
             icon="pi pi-upload"
+            (click)="prepareSuspectIpForBan()"
             [disabled]="!selectedSuspectIp || !selectedSuspectIp.length"
         />
     </ng-template>
@@ -55,8 +40,10 @@
             <th>IP Adresi</th>
             <th>Hangi hosttan gelmiş</th>
             <th>Oluşturulma Tarihi</th>
-            <th>Banlanmış mı?</th>
-            <th></th>
+            <th>Durum</th>
+            <th>Durum Güncellenme</th>
+            <th>Durum Güncelleyen</th>
+            <th>Detay</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-suspect>
@@ -76,33 +63,35 @@
                 }}
             </td>
             <td>
-                {{ suspect.isBanned }}
+                {{ suspect.status }}
             </td>
-
+            <td>
+                {{ suspect.statusAt | date : "dd MMMM yyyy, EEEE HH:mm"}}
+            </td>
+            <td>
+                {{ suspect.statusBy }}
+            </td>
             <td>
                 <p-button
-                    pRipple
-                    icon="pi pi-pencil"
-                    class="mr-2"
-                    [rounded]="true"
-                    [outlined]="true"
-                    severity="success"
-                    (click)="editProduct(product)"
-                />
-                <p-button
-                    pRipple
-                    icon="pi pi-trash"
-                    severity="danger"
-                    [rounded]="true"
-                    [outlined]="true"
-                    (click)="deleteProduct(product)"
-                />
+                severity="warning"
+                label="Satır Detay"
+                icon="pi pi-info-circle"
+                class="mr-2"
+                (click)="showLineDetailDialog(suspect.line)"
+            />
             </td>
+    
         </tr>
     </ng-template>
-    <ng-template pTemplate="summary">
-        <div class="flex align-items-center justify-content-between">
-            Kayıtlı {{ servers ? servers.length : 0 }} sunucu var.
-        </div>
-    </ng-template>
 </p-table>
+
+<p-dialog 
+    header="Satır Detay" 
+    [modal]="true"
+    [(visible)]="visible" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+        <p>
+            {{selectedLine}}
+        </p>
+</p-dialog>
+

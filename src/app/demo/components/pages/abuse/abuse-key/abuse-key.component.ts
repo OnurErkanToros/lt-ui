@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { AbuseDbKeyRequest, AbuseDbKeyResponse } from 'src/app/demo/models/abuse';
-import { DataResult } from 'src/app/demo/models/result';
 import { AbuseKeyService } from 'src/app/demo/service/abuseKey.service';
 
 @Component({
@@ -40,6 +39,9 @@ export class AbuseKeyComponent implements OnInit{
       }
     )
   }
+  openNewAbuseKeyDialog(){
+    this.visible=true;
+  }
   addNewAbuseKey(form:NgForm){
     if(form.valid){
       this.abuseKeyService.addAbuseKey(this.abuseRequest)
@@ -66,6 +68,11 @@ export class AbuseKeyComponent implements OnInit{
             detail:error
           })
         }
+      })
+    }else{
+      this.messageService.add({
+        detail:'Tüm alanları doldurun!',
+        severity:'error'
       })
     }
   }

@@ -10,11 +10,11 @@ import { AuthService } from './auth.service';
     providedIn: 'root',
 })
 export class AbuseKeyService {
-    private apiUrl = environment.apiUrl + 'abuseKey/';
+    private apiUrl = environment.apiUrl + 'abuse-key/';
     constructor(private httpclient: HttpClient,private authService:AuthService) {}
 
     getAllAbuseKey():Observable<DataResult<AbuseDbKeyResponse[]>>{
-        return this.httpclient.get<DataResult<AbuseDbKeyResponse[]>>(this.apiUrl+"getAll",{headers:this.authService.getHeaders()});
+        return this.httpclient.get<DataResult<AbuseDbKeyResponse[]>>(this.apiUrl+"get-all",{headers:this.authService.getHeaders()});
     }
     addAbuseKey(abuseDbKeyRequest:AbuseDbKeyRequest):Observable<DataResult<AbuseDbKeyResponse>>{
         return this.httpclient.post<DataResult<AbuseDbKeyResponse>>(this.apiUrl+"add",abuseDbKeyRequest,{headers:this.authService.getHeaders()});

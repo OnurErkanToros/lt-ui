@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { er } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
-import { Product } from 'src/app/demo/api/product';
+import { BanIpRequest } from 'src/app/demo/models/banned-ip';
 import { Page } from 'src/app/demo/models/page';
 import { DataResult } from 'src/app/demo/models/result';
-import { ServerResponse, ServerRequest } from 'src/app/demo/models/server';
 import { SuspectIpResponse } from 'src/app/demo/models/suspectIp';
 import { SuspectIpService } from 'src/app/demo/service/suspect-ip.service';
 
@@ -13,8 +13,10 @@ import { SuspectIpService } from 'src/app/demo/service/suspect-ip.service';
   providers: [MessageService]
 })
 export class ListenerCaughtsComponent implements OnInit {
-    suspectIpList!: SuspectIpResponse[];
+    suspectIpList?: SuspectIpResponse[];
     selectedSuspectIp:SuspectIpResponse[]=[];
+    selectedLine?:string;
+    banIpRequestList:BanIpRequest[]=[];
     loading=false;
     visible=false;
     first=0;
@@ -72,6 +74,39 @@ export class ListenerCaughtsComponent implements OnInit {
             }
         })
     }
+    prepareSuspectIpForBan(){
+        this.prepareBadRequestIpList();
+        this.suspectIpService.prepareSuspectIpForBan(this.banIpRequestList).subscribe({
+            next:data=>{
+                if(data.success){
+                    this.messageService.add({
+                        severity:'success',
+                        detail:'Seçilenler transfere hazırlandı.'
+                    })
+                }else{
+                    this.messageService.add({
+                        severity:'error',
+                        detail:data.message
+                    })
+                }
+            },error:err=>{
+                console.log(err)
+                this.messageService.add({
+                    severity:'error',
+                    detail:err.message
+                })
+            }
+        });
+    }
+    
+    prepareBadRequestIpList(){
+        this.selectedSuspectIp.forEach(element => {
+            this.banIpRequestList.push({ip:element.ip});
+        });
+    }
 
-
+    showLineDetailDialog(line:string){
+        this.selectedLine=line;
+        this.visible=true;
+    }
 }

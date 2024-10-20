@@ -1,20 +1,17 @@
-import {
-    SuspectIpResponse,
-} from '../models/suspectIp';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DataResult, Result } from '../models/result';
+import { DataResult } from '../models/result';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
 import { Page } from '../models/page';
-import { BanIpRequest } from '../models/banned-ip';
+import { BannedIpResponse } from '../models/banned-ip';
 
 @Injectable({
     providedIn: 'root',
 })
-export class SuspectIpService {
-    private apiUrl = environment.apiUrl + 'suspect-ip/';
+export class BannedIpService {
+    private apiUrl = environment.apiUrl + 'banned-ip/';
     constructor(
         private httpClient: HttpClient,
         private authService: AuthService
@@ -22,16 +19,16 @@ export class SuspectIpService {
     getAll(
         page: number,
         size: number
-    ): Observable<DataResult<Page<SuspectIpResponse>>> {
+    ): Observable<DataResult<Page<BannedIpResponse>>> {
         const params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
-        return this.httpClient.get<DataResult<Page<SuspectIpResponse>>>(
+        return this.httpClient.get<DataResult<Page<BannedIpResponse>>>(
             this.apiUrl + 'get-all',
             { headers: this.authService.getHeaders(), params }
         );
     }
-    prepareSuspectIpForBan(suspectIpList:BanIpRequest[]):Observable<Result>{
-        return this.httpClient.post(this.apiUrl+'ban',null,{headers:this.authService.getHeaders()});
+    getUntransferredCount():Observable<DataResult<number>>{
+        return this.httpClient.get<DataResult<number>>(this.apiUrl+'untransferred-count',{headers:this.authService.getHeaders()})
     }
 }

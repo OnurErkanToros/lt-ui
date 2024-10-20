@@ -72,6 +72,11 @@ export class AppMenuComponent implements OnInit {
                         label:'Sunucu',
                         icon:'pi pi-fw pi-server',
                         routerLink:['/pages/server']
+                    },
+                    {
+                        label:'Ban',
+                        icon:'pi pi-fw pi-server',
+                        routerLink:['/pages/ban']
                     }
                 ]
             }

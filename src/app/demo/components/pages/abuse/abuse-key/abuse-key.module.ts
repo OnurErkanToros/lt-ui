@@ -10,9 +10,13 @@ import { InputTextModule } from "primeng/inputtext";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { TableModule } from "primeng/table";
 import { ToolbarModule } from "primeng/toolbar";
+import { AbuseKeyRoutingModule } from "./abuse-key-routing.module";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
     imports:[
+        AbuseKeyRoutingModule,
+        CommonModule,
         FormsModule,
         CardModule,
         ButtonModule,

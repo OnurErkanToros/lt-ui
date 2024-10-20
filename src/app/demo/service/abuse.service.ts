@@ -11,6 +11,7 @@ import { DataResult, Result } from '../models/result';
 import { AuthService } from './auth.service';
 import { MessageService } from 'primeng/api';
 import { Page } from '../models/page';
+import { BanIpRequest } from '../models/banned-ip';
 
 @Injectable({
     providedIn: 'root',
@@ -96,5 +97,16 @@ export class AbuseService {
               return throwError(() => new Error(errorMessage));
             })
           );
+    }
+
+    getCountBlacklistStatusNew():Observable<DataResult<number>>{
+      return this.httpclient.get(this.apiUrl+'blacklist/count-new',{headers:this.authService.getHeaders()})
+    }
+
+    prepareBlackListForBanning():Observable<Result>{
+      return this.httpclient.post(this.apiUrl+'blacklist/ban',null,{headers:this.authService.getHeaders()});
+    }
+    prepareCheckIpForBanning(banIpRequest:BanIpRequest):Observable<Result>{
+      return this.httpclient.post(this.apiUrl+"check-ip/ban",banIpRequest,{headers:this.authService.getHeaders()})
     }
 }
