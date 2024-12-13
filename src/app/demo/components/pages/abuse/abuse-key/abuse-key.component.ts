@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { AbuseDbKeyRequest, AbuseDbKeyResponse } from 'src/app/demo/models/abuse';
 import { AbuseKeyService } from 'src/app/demo/service/abuseKey.service';
+import { LoadingService } from 'src/app/demo/service/util/loading.service';
 
 @Component({
   selector: 'app-abuse-key',
@@ -11,30 +12,32 @@ import { AbuseKeyService } from 'src/app/demo/service/abuseKey.service';
 })
 export class AbuseKeyComponent implements OnInit{
   abuseKeys: AbuseDbKeyResponse[] = [];
-  loading = false;
+  loading$ = this.loadingService.loading$;
   visible = false;
   abuseRequest: AbuseDbKeyRequest = {};
-  constructor(private abuseKeyService: AbuseKeyService, private messageService: MessageService) { }
+  constructor(
+    private abuseKeyService: AbuseKeyService,
+    private messageService: MessageService,
+    private loadingService: LoadingService
+  ) { }
   ngOnInit(): void {
     this.loadAbuseKeys();
   }
   loadAbuseKeys(){
-    this.loading=true;
     this.abuseKeyService.getAllAbuseKey()
     .subscribe(
       {
         next:data=>{
-          if(data.success){
-            this.abuseKeys=data.data;
+          if(data){
+            this.abuseKeys=data;
           }else{
             this.messageService.add(
               {
-                detail:data.message,
+                detail:'Bir sorun var!',
                 severity:'error'
               }
             )
           }
-          this.loading=false;
         }
       }
     )
@@ -47,10 +50,10 @@ export class AbuseKeyComponent implements OnInit{
       this.abuseKeyService.addAbuseKey(this.abuseRequest)
       .subscribe({
         next: data=>{
-          if(data.success){
+          if(data){
             this.messageService.add({
               severity:'success',
-              detail:data.message
+              detail:'Başarıyla eklendi.'
             });
             this.abuseRequest={}
             this.loadAbuseKeys();
@@ -58,15 +61,9 @@ export class AbuseKeyComponent implements OnInit{
           }else{
             this.messageService.add({
               severity:'error',
-              detail:data.message
+              detail:'Bir sorun oluştu!'
             })
           }
-        },
-        error: error=>{
-          this.messageService.add({
-            severity:'error',
-            detail:error
-          })
         }
       })
     }else{

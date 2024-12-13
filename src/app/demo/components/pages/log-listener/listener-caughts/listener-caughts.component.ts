@@ -40,36 +40,17 @@ export class ListenerCaughtsComponent implements OnInit {
         this.loading=true;
         this.suspectIpService.getAll(this.page,this.size)
         .subscribe({
-            next:(data:DataResult<Page<SuspectIpResponse>>)=>{
-                if(data.success){
-                    this.suspectIpList=data.data.content;
-                    this.totalRecords= data.data.totalElements;
+            next:(data)=>{
+                if(data){
+                    this.suspectIpList=data.content;
+                    this.totalRecords= data.totalElements;
                 }else{
                     this.messageService.add({
                         severity:'error',
-                        detail:data.message
+                        detail:'Bir sorun oluştu!'
                     }
                     )
                 }
-                this.loading=false;
-            },
-            error :(error)=>{
-                let errorMsg = 'Bir hata oluştu.';
-                    if (error.error instanceof ErrorEvent) {
-                        // Client-side error
-                        errorMsg = `Hata: ${error.error.message}`;
-                    } else {
-                        // Server-side error
-                        if (error.error && error.error.message) {
-                            errorMsg = `Hata: ${error.error.message}`;
-                        } else if (error.status) {
-                            errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
-                        }
-                    }
-                    this.messageService.add({
-                        severity: 'error',
-                        detail: errorMsg
-                    });
                 this.loading=false;
             }
         })
@@ -78,7 +59,7 @@ export class ListenerCaughtsComponent implements OnInit {
         this.prepareBadRequestIpList();
         this.suspectIpService.prepareSuspectIpForBan(this.banIpRequestList).subscribe({
             next:data=>{
-                if(data.success){
+                if(data){
                     this.messageService.add({
                         severity:'success',
                         detail:'Seçilenler transfere hazırlandı.'
@@ -86,15 +67,9 @@ export class ListenerCaughtsComponent implements OnInit {
                 }else{
                     this.messageService.add({
                         severity:'error',
-                        detail:data.message
+                        detail:'Bir sorun oluştu!'
                     })
                 }
-            },error:err=>{
-                console.log(err)
-                this.messageService.add({
-                    severity:'error',
-                    detail:err.message
-                })
             }
         });
     }

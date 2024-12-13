@@ -13,10 +13,10 @@ export class AbuseKeyService {
     private apiUrl = environment.apiUrl + 'abuse-key/';
     constructor(private httpclient: HttpClient,private authService:AuthService) {}
 
-    getAllAbuseKey():Observable<DataResult<AbuseDbKeyResponse[]>>{
-        return this.httpclient.get<DataResult<AbuseDbKeyResponse[]>>(this.apiUrl+"get-all",{headers:this.authService.getHeaders()});
+    getAllAbuseKey():Observable<AbuseDbKeyResponse[]>{
+        return this.httpclient.get<AbuseDbKeyResponse[]>(this.apiUrl+"get-all",{headers:this.authService.getHeaders()});
     }
-    addAbuseKey(abuseDbKeyRequest:AbuseDbKeyRequest):Observable<DataResult<AbuseDbKeyResponse>>{
-        return this.httpclient.post<DataResult<AbuseDbKeyResponse>>(this.apiUrl+"add",abuseDbKeyRequest,{headers:this.authService.getHeaders()});
+    addAbuseKey(abuseDbKeyRequest:AbuseDbKeyRequest):Observable<AbuseDbKeyResponse>{
+        return this.httpclient.post<AbuseDbKeyResponse>(this.apiUrl+"add",abuseDbKeyRequest,{headers:this.authService.getHeaders()});
     }
 }

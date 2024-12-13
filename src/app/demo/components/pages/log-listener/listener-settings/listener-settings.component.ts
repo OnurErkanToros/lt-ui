@@ -22,37 +22,18 @@ export class ListenerSettingsComponent implements OnInit {
         this.loading=true;
         this.loglistenerService.status()
         .subscribe({
-            next:(data:DataResult<LogListenerStatus>)=>{
+            next:(data)=>{
                 console.log(data)
-                if(data.success){
-                    if(data.data.status==='STARTED'){
+                if(data){
+                    if(data.status==='STARTED'){
                         this.checked=true;
                     }else{
                         this.checked=false;
                     }
                 }else{
                     this.messageService.add
-                    ({detail:data.message,severity:'error'});
+                    ({detail:'Bir sorun oluştu!',severity:'error'});
                 }
-                this.loading=false;
-            },
-            error:(error)=>{
-                let errorMsg = 'Bir hata oluştu.';
-                    if (error.error instanceof ErrorEvent) {
-                        // Client-side error
-                        errorMsg = `Hata: ${error.error.message}`;
-                    } else {
-                        // Server-side error
-                        if (error.error && error.error.message) {
-                            errorMsg = `Hata: ${error.error.message}`;
-                        } else if (error.status) {
-                            errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
-                        }
-                    }
-                    this.messageService.add({
-                        severity: 'error',
-                        detail: errorMsg
-                    });
                 this.loading=false;
             }
         }
@@ -69,34 +50,15 @@ export class ListenerSettingsComponent implements OnInit {
         this.loading=true;
         this.loglistenerService.start()
         .subscribe({
-            next:(data:DataResult<string>)=>{
-                if(data.success){
+            next:(data)=>{
+                if(data){
                     this.checked=true;
                     this.messageService.add
-                    ({detail:data.message,severity:'success'});
+                    ({detail:'Başarıyla başlatıldı.',severity:'success'});
                 }else{
                     this.messageService.add
-                    ({detail:data.message,severity:'error'});
+                    ({detail:'Bir sorun oluştu!',severity:'error'});
                 }
-                this.loading=false;
-            },
-            error:(error)=>{
-                let errorMsg = 'Bir hata oluştu.';
-                    if (error.error instanceof ErrorEvent) {
-                        // Client-side error
-                        errorMsg = `Hata: ${error.error.message}`;
-                    } else {
-                        // Server-side error
-                        if (error.error && error.error.message) {
-                            errorMsg = `Hata: ${error.error.message}`;
-                        } else if (error.status) {
-                            errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
-                        }
-                    }
-                    this.messageService.add({
-                        severity: 'error',
-                        detail: errorMsg
-                    });
                 this.loading=false;
             }
         }
@@ -106,34 +68,15 @@ export class ListenerSettingsComponent implements OnInit {
         this.loading=true;
         this.loglistenerService.stop()
         .subscribe({
-            next:(data:DataResult<string>)=>{
-                if(data.success){
+            next:(data)=>{
+                if(data){
                     this.checked=false;
                     this.messageService.add
-                    ({detail:data.message,severity:'success'});
+                    ({detail:'Başarıyla durduruldu.',severity:'success'});
                 }else{
                     this.messageService.add
-                    ({detail:data.message,severity:'error'});
+                    ({detail:'Bir sorun oluştu!',severity:'error'});
                 }
-                this.loading=false;
-            },
-            error:(error)=>{
-                let errorMsg = 'Bir hata oluştu.';
-                    if (error.error instanceof ErrorEvent) {
-                        // Client-side error
-                        errorMsg = `Hata: ${error.error.message}`;
-                    } else {
-                        // Server-side error
-                        if (error.error && error.error.message) {
-                            errorMsg = `Hata: ${error.error.message}`;
-                        } else if (error.status) {
-                            errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
-                        }
-                    }
-                    this.messageService.add({
-                        severity: 'error',
-                        detail: errorMsg
-                    });
                 this.loading=false;
             }
         }

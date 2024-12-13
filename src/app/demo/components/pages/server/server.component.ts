@@ -29,23 +29,15 @@ export class ServerComponent implements OnInit{
         this.loading=true;
         this.serverService.getAllServer()
         .subscribe({
-            next:(data:DataResult<ServerResponse[]>)=>{
-                if(data.success){
-                    this.servers=data.data;
+            next:(data)=>{
+                if(data){
+                    this.servers=data;
                 }else{
                     this.messageService.add({
                         severity:'error',
-                        detail:data.message
+                        detail:'Bir sorun oluştu!'
                     });
-                    this.servers=data.data;
                 }
-                this.loading=false;
-            },
-            error:(error)=>{
-                this.messageService.add({
-                    severity:'error',
-                    detail:error
-                })
                 this.loading=false;
             }
         });
@@ -57,11 +49,11 @@ export class ServerComponent implements OnInit{
         if(form.valid){
             this.serverService.addServer(this.requestServer)
             .subscribe({
-                next:(data:DataResult<ServerResponse>)=>{
-                    if(data.success){
+                next:(data)=>{
+                    if(data){
                         this.messageService.add({
                             severity:'success',
-                            detail:data.message
+                            detail:'Başarıyla eklendi.'
                         });
                         this.requestServer={};
                         this.loadServers();
@@ -69,26 +61,9 @@ export class ServerComponent implements OnInit{
                     }else{
                         this.messageService.add({
                             severity:'error',
-                            detail:data.message
+                            detail:'Bir sorun oluştu.'
                         })
                     }
-                },error:error=>{
-                    let errorMsg = 'Bir hata oluştu.';
-                    if (error.error instanceof ErrorEvent) {
-                        // Client-side error
-                        errorMsg = `Hata: ${error.error.message}`;
-                    } else {
-                        // Server-side error
-                        if (error.error && error.error.message) {
-                            errorMsg = `Hata: ${error.error.message}`;
-                        } else if (error.status) {
-                            errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
-                        }
-                    }
-                    this.messageService.add({
-                        severity: 'error',
-                        detail: errorMsg
-                    });
                 }
             }
             )
@@ -106,37 +81,20 @@ export class ServerComponent implements OnInit{
         });
         this.serverService.deleteServerByIdList(idList)
         .subscribe({
-            next:(data:Result)=>{
-                if(data.success){
+            next:(data)=>{
+                if(data){
                     this.messageService.add({
                         severity:'success',
-                        detail:data.message
+                        detail:'Başarıyla silindi.'
                     });
                     this.selectedServers=[]
                     this.loadServers();
                 }else{
                     this.messageService.add({
                         severity:'error',
-                        detail:data.message
+                        detail:'Bir sorun oluştu!'
                     });
                 }
-            },error:error=>{
-                let errorMsg = 'Bir hata oluştu.';
-                    if (error.error instanceof ErrorEvent) {
-                        // Client-side error
-                        errorMsg = `Hata: ${error.error.message}`;
-                    } else {
-                        // Server-side error
-                        if (error.error && error.error.message) {
-                            errorMsg = `Hata: ${error.error.message}`;
-                        } else if (error.status) {
-                            errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
-                        }
-                    }
-                    this.messageService.add({
-                        severity: 'error',
-                        detail: errorMsg
-                    });
             }
         })
     }

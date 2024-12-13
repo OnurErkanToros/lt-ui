@@ -1,1 +1,10 @@
+<p-toast></p-toast>
+<div class="progress-spinner" *ngIf="loading$ | async">
+    <p-progressSpinner
+        styleClass="w-4rem h-4rem "
+        strokeWidth="7"
+        animationDuration=".5s"
+        >
+    </p-progressSpinner>
+</div>
 <router-outlet></router-outlet>

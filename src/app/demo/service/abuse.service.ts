@@ -5,11 +5,9 @@ import {
 } from '../models/abuse';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { DataResult, Result } from '../models/result';
 import { AuthService } from './auth.service';
-import { MessageService } from 'primeng/api';
 import { Page } from '../models/page';
 import { BanIpRequest } from '../models/banned-ip';
 
@@ -21,12 +19,11 @@ export class AbuseService {
     constructor(
         private httpclient: HttpClient,
         private authService: AuthService,
-        private messageService: MessageService
     ) {}
 
     checkIp(
         abuseCheckRequestDto: AbuseCheckRequest
-    ): Observable<DataResult<AbuseCheckResponse>> {
+    ): Observable<AbuseCheckResponse> {
         const params = new HttpParams()
             .set('maxAgeInDays', abuseCheckRequestDto.maxAgeInDays)
             .set('ipAddress', abuseCheckRequestDto.ipAddress);
@@ -34,79 +31,43 @@ export class AbuseService {
                 headers:this.authService.getHeaders(),
                 params:params
             }
-        return this.httpclient.post<DataResult<AbuseCheckResponse>>(
+        return this.httpclient.post<AbuseCheckResponse>(
             this.apiUrl + 'check-ip',
             null,
             options
-        ).pipe(
-            catchError(error => {
-              let errorMessage = 'Bir hata oluştu.';
-
-              if (error.status === 404) {
-                errorMessage = 'Sayfa bulunamadı.';
-              } else if (error.status === 500) {
-                errorMessage = 'Sunucu hatası.';
-              }
-              this.messageService.add({severity:'error', detail: errorMessage});
-              return throwError(() => new Error(errorMessage));
-            })
-          );
+        );
     }
-    refreshBlackList(): Observable<Result> {
+    refreshBlackList(): Observable<boolean> {
         const options= {
             headers:this.authService.getHeaders(),
         }
-        return this.httpclient.post<DataResult<AbuseBlackListResponse[]>>(
+        return this.httpclient.post<boolean>(
             this.apiUrl + 'blacklist/refresh',
             null,
             options
-        ).pipe(
-            catchError(error => {
-              let errorMessage = 'Bir hata oluştu.';
-
-              if (error.status === 404) {
-                errorMessage = 'Sayfa bulunamadı.';
-              } else if (error.status === 500) {
-                errorMessage = 'Sunucu hatası.';
-              }
-              this.messageService.add({severity:'error', detail: errorMessage});
-              return throwError(() => new Error(errorMessage));
-            })
-          );
+        );
     }
     getAllBlackList(
         page: number,
         size: number
-    ): Observable<DataResult<Page<AbuseBlackListResponse>>> {
+    ): Observable<Page<AbuseBlackListResponse>> {
         const params = new HttpParams()
             .set('page', page)
             .set('size', size);
-        return this.httpclient.get<DataResult<Page<AbuseBlackListResponse>>>(
+        return this.httpclient.get<Page<AbuseBlackListResponse>>(
             this.apiUrl + 'blacklist/all',
             { headers: this.authService.getHeaders(),params }
-        ).pipe(
-            catchError(error => {
-                console.log(error);
-              let errorMessage = 'Bir hata oluştu.';
-              if (error.status === 404) {
-                errorMessage = 'Sayfa bulunamadı.';
-              } else if (error.status === 500) {
-                errorMessage = 'Sunucu hatası.';
-              }
-              this.messageService.add({severity:'error', detail: errorMessage});
-              return throwError(() => new Error(errorMessage));
-            })
-          );
+        )
     }
 
-    getCountBlacklistStatusNew():Observable<DataResult<number>>{
-      return this.httpclient.get(this.apiUrl+'blacklist/count-new',{headers:this.authService.getHeaders()})
+    getCountBlacklistStatusNew():Observable<number>{
+      return this.httpclient.get<number>(this.apiUrl+'blacklist/count-new',{headers:this.authService.getHeaders()})
     }
 
-    prepareBlackListForBanning():Observable<Result>{
-      return this.httpclient.post(this.apiUrl+'blacklist/ban',null,{headers:this.authService.getHeaders()});
+    prepareBlackListForBanning():Observable<boolean>{
+      return this.httpclient.post<boolean>(this.apiUrl+'blacklist/ban',null,{headers:this.authService.getHeaders()});
     }
-    prepareCheckIpForBanning(banIpRequest:BanIpRequest):Observable<Result>{
-      return this.httpclient.post(this.apiUrl+"check-ip/ban",banIpRequest,{headers:this.authService.getHeaders()})
+    prepareCheckIpForBanning(banIpRequest:BanIpRequest):Observable<boolean>{
+      return this.httpclient.post<boolean>(this.apiUrl+"check-ip/ban",banIpRequest,{headers:this.authService.getHeaders()})
     }
 }

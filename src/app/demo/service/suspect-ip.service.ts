@@ -22,16 +22,16 @@ export class SuspectIpService {
     getAll(
         page: number,
         size: number
-    ): Observable<DataResult<Page<SuspectIpResponse>>> {
+    ): Observable<Page<SuspectIpResponse>> {
         const params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
-        return this.httpClient.get<DataResult<Page<SuspectIpResponse>>>(
+        return this.httpClient.get<Page<SuspectIpResponse>>(
             this.apiUrl + 'get-all',
             { headers: this.authService.getHeaders(), params }
         );
     }
-    prepareSuspectIpForBan(suspectIpList:BanIpRequest[]):Observable<Result>{
-        return this.httpClient.post(this.apiUrl+'ban',null,{headers:this.authService.getHeaders()});
+    prepareSuspectIpForBan(suspectIpList:BanIpRequest[]):Observable<boolean>{
+        return this.httpClient.post<boolean>(this.apiUrl+'ban',null,{headers:this.authService.getHeaders()});
     }
 }

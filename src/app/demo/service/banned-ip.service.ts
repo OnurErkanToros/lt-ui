@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DataResult } from '../models/result';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
@@ -19,16 +18,16 @@ export class BannedIpService {
     getAll(
         page: number,
         size: number
-    ): Observable<DataResult<Page<BannedIpResponse>>> {
+    ): Observable<Page<BannedIpResponse>> {
         const params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
-        return this.httpClient.get<DataResult<Page<BannedIpResponse>>>(
+        return this.httpClient.get<Page<BannedIpResponse>>(
             this.apiUrl + 'get-all',
             { headers: this.authService.getHeaders(), params }
         );
     }
-    getUntransferredCount():Observable<DataResult<number>>{
-        return this.httpClient.get<DataResult<number>>(this.apiUrl+'untransferred-count',{headers:this.authService.getHeaders()})
+    getUntransferredCount():Observable<number>{
+        return this.httpClient.get<number>(this.apiUrl+'untransferred-count',{headers:this.authService.getHeaders()})
     }
 }

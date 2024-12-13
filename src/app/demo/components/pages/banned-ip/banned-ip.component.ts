@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { BannedIpResponse } from 'src/app/demo/models/banned-ip';
 import { BannedIpService } from 'src/app/demo/service/banned-ip.service';
+import { LoadingService } from 'src/app/demo/service/util/loading.service';
 
 @Component({
   selector: 'app-banned-ip',
@@ -11,7 +12,7 @@ import { BannedIpService } from 'src/app/demo/service/banned-ip.service';
 export class BannedIpComponent implements OnInit {
   bannedIpList:BannedIpResponse[]=[];
   selectedBannedIpList:BannedIpResponse[]=[];
-  loading=false;
+  loading$=this.loadingService.loading$;
   visible=false;
   first=0;
   size:number=10;
@@ -21,7 +22,8 @@ export class BannedIpComponent implements OnInit {
 
   constructor(
     private bannedIpService:BannedIpService,
-    private messageService:MessageService
+    private messageService:MessageService,
+    private loadingService:LoadingService
   ){}
 
   ngOnInit(): void {
@@ -36,29 +38,19 @@ export class BannedIpComponent implements OnInit {
 }
 
   loadBannedIpList(){
-    this.loading=true;
     this.bannedIpService.getAll(this.page,this.size)
     .subscribe({
       next:(data)=>{
-        if(data.success){
-          this.bannedIpList=data.data.content;
-          this.totalRecords=data.data.totalElements;
+        if(data){
+          this.bannedIpList=data.content;
+          this.totalRecords=data.totalElements;
         }else{
           this.messageService.add({
             severity:'error',
-            detail:data.message
+            detail:'Bir sorun var!'
           })
         }
-        this.loading=false;
-      },
-      error:(error)=>{
-        this.messageService.add({
-          severity: 'error',
-          detail: error
-      });
-       this.loading=false;
-      }
-    })
+      }});
   }
 
 

@@ -14,17 +14,17 @@ export class RegexService {
     private apiUrl = environment.apiUrl + 'logPattern/';
     constructor(private httpclient: HttpClient,private authService:AuthService) {}
 
-    addLogPattern(logListenerRegexRequest:LogListenerRegexRequest):Observable<Result>{
-        return this.httpclient.post<Result>(this.apiUrl+"add",logListenerRegexRequest,{headers:this.authService.getHeaders()});
+    addLogPattern(logListenerRegexRequest:LogListenerRegexRequest):Observable<boolean>{
+        return this.httpclient.post<boolean>(this.apiUrl+"add",logListenerRegexRequest,{headers:this.authService.getHeaders()});
     }
-    updateLogPattern(id:number,logListenerRegexRequest:LogListenerRegexRequest):Observable<Result>{
-        return this.httpclient.patch<Result>(this.apiUrl+"update/"+id,logListenerRegexRequest,{headers:this.authService.getHeaders()});
+    updateLogPattern(id:number,logListenerRegexRequest:LogListenerRegexRequest):Observable<boolean>{
+        return this.httpclient.patch<boolean>(this.apiUrl+"update/"+id,logListenerRegexRequest,{headers:this.authService.getHeaders()});
     }
-    deleteLogPattern(id:number):Observable<Result>{
-        return this.httpclient.delete<Result>(this.apiUrl+"delete/"+id,{headers:this.authService.getHeaders()});
+    deleteLogPattern(id:number):Observable<boolean>{
+        return this.httpclient.delete<boolean>(this.apiUrl+"delete/"+id,{headers:this.authService.getHeaders()});
     }
-    getAllLogPattern():Observable<DataResult<LogListenerRegexResponse[]>>{
-        return this.httpclient.get<DataResult<LogListenerRegexResponse[]>>(this.apiUrl+"getAll",{headers:this.authService.getHeaders()});
+    getAllLogPattern():Observable<LogListenerRegexResponse[]>{
+        return this.httpclient.get<LogListenerRegexResponse[]>(this.apiUrl+"getAll",{headers:this.authService.getHeaders()});
     }
 
 }

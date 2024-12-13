@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { dA } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
 import { AbuseCheckResponse } from 'src/app/demo/models/abuse';
-import { DataResult } from 'src/app/demo/models/result';
 import { AbuseService } from 'src/app/demo/service/abuse.service';
+import { LoadingService } from 'src/app/demo/service/util/loading.service';
 import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
 
 @Component({
@@ -12,59 +11,33 @@ import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
 })
 export class AbuseCheckComponent {
     ipAddress: string = '';
-    loading: boolean = false;
+    loading$ = this.loadingService.loading$;
     abuseCheckResponse: AbuseCheckResponse = {};
     visible=false;
     constructor(
         private messageService: MessageService,
-        private abuseService: AbuseService
+        private abuseService: AbuseService,
+        private loadingService:LoadingService
     ) {}
 
     checkIpAddress(event: MouseEvent) {
         if (this.validateIPAddress()) {
-            this.loading = true;
-
             this.abuseService
-                .checkIp({ ipAddress: this.ipAddress, maxAgeInDays: 90 })
+                .checkIp({ ipAddress: this.ipAddress, maxAgeInDays: 200 })
                 .subscribe({
-                    next: (data: DataResult<AbuseCheckResponse>) => {
-                        if (data.success) {
-                            this.abuseCheckResponse = data.data;
+                    next: (data) => {
+                        if (data) {
+                            this.abuseCheckResponse = data;
                             this.visible=true;
                         } else {
-                            if (data.message) {
-                                this.messageService.add({
-                                    severity: 'error',
-                                    detail: data.message,
-                                });
-                            } else {
+                        
                                 this.messageService.add({
                                     severity: 'error',
                                     detail: 'Sorgulama başarısız.'
                                 });
-                            }
+                            
                         }
-                        this.loading = false;
-                    },
-                    error: (error) => {
-                        this.loading = false;
-                        let errorMsg = 'Bir hata oluştu.';
-                        if (error.error instanceof ErrorEvent) {
-                            // Client-side error
-                            errorMsg = `Hata: ${error.error.message}`;
-                        } else {
-                            // Server-side error
-                            if (error.error && error.error.message) {
-                                errorMsg = `Hata: ${error.error.message}`;
-                            } else if (error.status) {
-                                errorMsg = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
-                            }
-                        }
-                        this.messageService.add({
-                            severity: 'error',
-                            detail: errorMsg
-                        });
-                    },
+                    }
                 });
         } else {
             this.messageService.add({
@@ -75,29 +48,20 @@ export class AbuseCheckComponent {
     }
 
     prepareCheckIpForBan(ip:string){
-        this.loading=true
         this.abuseService.prepareCheckIpForBanning({ip:ip}).subscribe(
             {
                 next:data=>{
-                    if(data.success){
+                    if(data){
                         this.messageService.add({
                             detail:'Banlanacaklar listesine eklendi.',
                             severity:'success'
                         })
                     }else{
                         this.messageService.add({
-                            detail:'Banlanacaklar listesine eklenemedi. '+data.message,
+                            detail:'Banlanacaklar listesine eklenemedi.',
                             severity:'error'
                         })
                     };
-                    this.loading=false
-                },
-                error:error=>{
-                    this.messageService.add({
-                        detail:error.error,
-                        severity:'error' 
-                    })
-                    this.loading=false
                 }
             }
         );
