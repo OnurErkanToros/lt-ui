@@ -1,1 +1,123 @@
-<p>listener-pattern works!</p>
+<p-toast />
+
+<p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+        <p-button
+            pRipple
+            severity="success"
+            label="Ekle"
+            icon="pi pi-plus"
+            class="mr-2"
+            (click)="visible = true"
+        />
+    </ng-template>
+</p-toolbar>
+
+<p-table
+    #dt
+    [value]="patternList"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [rowHover]="true"
+    dataKey="id"
+>
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Pattern Yönetimi</h5>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Pattern</th>
+            <th>Açıklama</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Oluşturan</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pattern>
+        <tr>
+            <td>
+                {{ pattern.pattern }}
+            </td>
+
+            <td>
+                {{ pattern.explanation }}
+            </td>
+            <td>
+                {{ pattern.creDate | date : "dd MMMM yyyy, EEEE HH:mm" }}
+            </td>
+
+            <td>
+                {{ pattern.creUser }}
+            </td>
+            <td>
+                <p-button
+                    pRipple
+                    icon="pi pi-trash"
+                    severity="danger"
+                    [rounded]="true"
+                    [outlined]="true"
+                    disable="true"
+                    (click)="deletePattern(pattern.id)"
+                />
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Kayıtlı {{ patternList ? patternList.length : 0 }} pattern var.
+        </div>
+    </ng-template>
+</p-table>
+
+<p-dialog
+    header="Yeni Pattern Ekle"
+    [modal]="true"
+    [(visible)]="visible"
+    [style]="{ width: '50rem' }"
+    draggable="false"
+>
+    <form [formGroup]="patternForm" (ngSubmit)="patternFormSubmit()">
+
+        <div *ngIf="patternForm.get('pattern')?.invalid && patternForm.get('pattern')?.touched">
+            <small>
+                Lütfen pattern giriniz!
+            </small>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="pattern" class="font-semibold w-6rem">Pattern</label>
+            <input
+                pInputText
+                type="text"
+                id="pattern"
+                class="flex-auto"
+                formControlName="pattern"
+            />
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="explanation" class="font-semibold w-6rem"
+                >Açıklama</label
+            >
+            <input
+                pInputText
+                type="text"
+                id="explanation"
+                class="flex-auto"
+                formControlName="explanation"
+            />
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="İptal"
+                severity="secondary"
+                (click)="visible = false"
+            />
+            <p-button
+                label="Ekle"
+                type="submit"
+                [disabled]="patternForm.invalid"
+            />
+        </div>
+    </form>
+</p-dialog>

@@ -11,7 +11,7 @@ import { LogListenerRegexRequest, LogListenerRegexResponse } from '../models/reg
     providedIn: 'root',
 })
 export class RegexService {
-    private apiUrl = environment.apiUrl + 'logPattern/';
+    private apiUrl = environment.apiUrl + 'log-pattern/';
     constructor(private httpclient: HttpClient,private authService:AuthService) {}
 
     addLogPattern(logListenerRegexRequest:LogListenerRegexRequest):Observable<boolean>{
@@ -24,7 +24,7 @@ export class RegexService {
         return this.httpclient.delete<boolean>(this.apiUrl+"delete/"+id,{headers:this.authService.getHeaders()});
     }
     getAllLogPattern():Observable<LogListenerRegexResponse[]>{
-        return this.httpclient.get<LogListenerRegexResponse[]>(this.apiUrl+"getAll",{headers:this.authService.getHeaders()});
+        return this.httpclient.get<LogListenerRegexResponse[]>(this.apiUrl+"get-all",{headers:this.authService.getHeaders()});
     }
 
 }

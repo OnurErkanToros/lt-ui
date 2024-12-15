@@ -56,22 +56,12 @@
             <td>
                 <p-button
                     pRipple
-                    icon="pi pi-pencil"
-                    class="mr-2"
-                    [rounded]="true"
-                    [outlined]="true"
-                    severity="success"
-                    disable="true"
-                    (click)="editProduct(product)"
-                />
-                <p-button
-                    pRipple
                     icon="pi pi-trash"
                     severity="danger"
                     [rounded]="true"
                     [outlined]="true"
                     disable="true"
-                    (click)="deleteProduct(product)"
+                    (click)="deleteKey(key.id)"
                 />
             </td>
         </tr>

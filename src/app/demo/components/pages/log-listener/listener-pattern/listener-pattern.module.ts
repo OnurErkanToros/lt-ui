@@ -8,7 +8,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListenerPatternRoutingModule } from './listener-pattern-routing.module';
 
 @NgModule({
@@ -23,6 +23,7 @@ import { ListenerPatternRoutingModule } from './listener-pattern-routing.module'
         DialogModule,
         InputTextModule,
         FormsModule,
+        ReactiveFormsModule
     ],
     declarations: [ListenerPatternComponent],
 })

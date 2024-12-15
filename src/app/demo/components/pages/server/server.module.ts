@@ -10,6 +10,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { FormsModule } from '@angular/forms';
         TableModule,
         DialogModule,
         InputTextModule,
-        FormsModule
+        FormsModule,
+        InputNumberModule,
     ],
     declarations: [ServerComponent],
 })

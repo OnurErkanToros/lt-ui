@@ -19,4 +19,7 @@ export class AbuseKeyService {
     addAbuseKey(abuseDbKeyRequest:AbuseDbKeyRequest):Observable<AbuseDbKeyResponse>{
         return this.httpclient.post<AbuseDbKeyResponse>(this.apiUrl+"add",abuseDbKeyRequest,{headers:this.authService.getHeaders()});
     }
+    deleteAbuseKey(id:number):Observable<boolean>{
+        return this.httpclient.delete<boolean>(this.apiUrl+'delete/'+id,{headers:this.authService.getHeaders()})
+    }
 }

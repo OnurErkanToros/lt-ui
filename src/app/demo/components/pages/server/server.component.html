@@ -9,15 +9,6 @@
             class="mr-2"
             (click)="openNewServerDialog()"
         />
-        <p-button
-            pRipple
-            severity="danger"
-            label="Seçili Olanları Sil"
-            icon="pi pi-trash"
-            (click)="deleteSelectedServers()"
-            class="mr-2"
-            [disabled]="!selectedServers || !selectedServers.length"
-        />
     </ng-template>
     <ng-template pTemplate="right">
         <p-button
@@ -84,12 +75,10 @@
                 {{ server.fileName }}
             </td>
             <td>
-                {{ server.active ? 'Aktif':'Deaktif' }}
+                {{ server.active ? "Aktif" : "Deaktif" }}
             </td>
             <td>
-                {{
-                    server.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
-                }}
+                {{ server.createdAt | date : "dd MMMM yyyy, EEEE HH:mm" }}
             </td>
             <td>
                 {{ server.createdBy }}
@@ -103,7 +92,7 @@
                     [outlined]="true"
                     severity="success"
                     disable="true"
-                    (click)="editProduct(product)"
+                    (click)="editServer(server)"
                 />
                 <p-button
                     pRipple
@@ -112,7 +101,7 @@
                     [rounded]="true"
                     [outlined]="true"
                     disable="true"
-                    (click)="deleteProduct(product)"
+                    (click)="deleteServerById(server.id)"
                 />
             </td>
         </tr>
@@ -131,7 +120,7 @@
     [style]="{ width: '25rem' }"
     draggable="false"
 >
-    <form #form="ngForm" (ngSubmit)="addNewServer(form)">
+    <form #form="ngForm" (ngSubmit)="saveServer(form)">
         <span class="p-text-secondary block mb-5"
             >Sunucu bilgilerini girin</span
         >
@@ -160,13 +149,13 @@
         </div>
         <div class="flex align-items-center gap-3 mb-3">
             <label for="port" class="font-semibold w-6rem">Port*</label>
-            <input
-                pInputText
-                id="port"
-                class="flex-auto"
-                required
-                name="port"
+            <p-inputNumber
                 [(ngModel)]="requestServer.port"
+                id="port"
+                inputId="minmax"
+                mode="decimal"
+                [min]="0"
+                [max]="65535"
             />
         </div>
         <div class="flex align-items-center gap-3 mb-3">
@@ -207,7 +196,9 @@
             />
         </div>
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="fileName" class="font-semibold w-6rem">Dosya Adı*</label>
+            <label for="fileName" class="font-semibold w-6rem"
+                >Dosya Adı*</label
+            >
             <input
                 pInputText
                 id="fileName"
@@ -224,7 +215,7 @@
                 severity="secondary"
                 (click)="visible = false"
             />
-            <p-button label="Ekle" type="submit" />
+            <p-button label="Kaydet" type="submit" />
         </div>
     </form>
 </p-dialog>

@@ -73,4 +73,12 @@ export class AbuseKeyComponent implements OnInit{
       })
     }
   }
+  deleteKey(id:number){
+    this.abuseKeyService.deleteAbuseKey(id).subscribe({
+      next:()=>{
+        this.loadAbuseKeys();
+      }
+    });
+    
+  }
 }
