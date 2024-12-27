@@ -13,6 +13,8 @@ import { HttpErrorInterceptor } from './interceptors/http-error';
 import { ToastModule } from 'primeng/toast';
 import { LoadingInterceptor } from './interceptors/loading';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { AuthService } from './demo/service/auth.service';
+import { PermissionService } from './guards/auth.guard';
 registerLocaleData(localeTr);
 
 @NgModule({
@@ -22,6 +24,8 @@ registerLocaleData(localeTr);
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         DataViewModule,
         MessageService,
+        AuthService,
+        PermissionService,
         { provide: LOCALE_ID, useValue: 'tr-TR' },
         {provide:HTTP_INTERCEPTORS,useClass:HttpErrorInterceptor,multi:true},
         {provide:HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true}

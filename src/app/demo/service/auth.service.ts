@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {  AuthenticationRequest, AuthenticationResponse } from '../models/auth';
+import { catchError, map, Observable, of } from 'rxjs';
+import {jwtDecode} from 'jwt-decode';
 
 @Injectable({
     providedIn: 'root',
@@ -13,19 +15,21 @@ export class AuthService {
     private username:string;
     constructor(private httpClient: HttpClient,
     ) {}
-    login(
-        authenticationRequest: AuthenticationRequest
-    ){
-        console.log("token almaya geldi.")
-        this.httpClient.post<AuthenticationResponse>(
-            this.apiUrl+'login',
+    login(authenticationRequest: AuthenticationRequest): Observable<boolean> {
+        return this.httpClient.post<AuthenticationResponse>(
+            this.apiUrl + 'login',
             authenticationRequest
-        ).subscribe({
-            next:(data)=>{
-                let token ="Bearer "+data.token;
-                this.saveToken(token);    
-            }
-        });
+        ).pipe(
+            map((data) => {
+                const token = "Bearer " + data.token;
+                this.saveToken(token);
+                return true;
+            }),
+            catchError((error) => {
+                console.error("Login error", error);
+                return of(false);
+            })
+        );
     }
     saveToken(token: string): void {
         localStorage.setItem(this.TOKEN_KEY, token);
@@ -49,17 +53,24 @@ export class AuthService {
     getUsername():string{
         return localStorage.getItem('username');
     }
-    isAuthenticated():boolean{
-        this.token= this.getToken();
-        this.username=this.getUsername();
-        return !!this.token;
+    isAuthenticated(): boolean {
+        const token = this.getToken();
+        if (!token) {
+            return false;
+        }
+    
+        try {
+            // Token'i decode edip süresini kontrol et
+            const decodedToken: any = jwtDecode(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Şu anki zaman (saniye olarak)
+            return decodedToken.exp > currentTime; // Süresi dolmamışsa true döner
+        } catch (error) {
+            console.error("Invalid token:", error);
+            return false;
+        }
     }
 
-    getHeaders(): HttpHeaders {
-        if(!this.isAuthenticated()){
-            this.login({username:'onurerkan',password:'1234'})
-        }
-                        
+    getHeaders(): HttpHeaders {                
         return new HttpHeaders({
             'Content-Type': 'application/json',
             'Authorization': this.token,
