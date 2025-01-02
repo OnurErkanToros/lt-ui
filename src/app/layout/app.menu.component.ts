@@ -42,7 +42,7 @@ export class AppMenuComponent implements OnInit {
                             },
                             {
                                 label: 'Key',
-                                icon: 'pi pi-fw pi-search',
+                                icon: 'pi pi-fw pi-key',
                                 routerLink: ['/pages/abuse/key']
                             }
                         ]

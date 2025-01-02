@@ -7,9 +7,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListenerCaughtsComponent } from './listener-caughts.component';
 import { ListenerCaughtsRoutingModule } from './listener-caughts-routing.module';
+import { FieldsetModule } from 'primeng/fieldset';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
     imports: [
@@ -23,6 +25,9 @@ import { ListenerCaughtsRoutingModule } from './listener-caughts-routing.module'
         DialogModule,
         InputTextModule,
         FormsModule,
+        FieldsetModule,
+        ReactiveFormsModule,
+        SelectButtonModule
     ],
     declarations: [ListenerCaughtsComponent],
 })

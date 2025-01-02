@@ -3,7 +3,6 @@ import {
 } from '../models/suspectIp';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DataResult, Result } from '../models/result';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
@@ -19,13 +18,26 @@ export class SuspectIpService {
         private httpClient: HttpClient,
         private authService: AuthService
     ) {}
-    getAll(
+    getFiltered(
         page: number,
-        size: number
+        size: number,
+        searchCriteria:{ipAddress?:string;host?:string;status?:string}={}
     ): Observable<Page<SuspectIpResponse>> {
-        const params = new HttpParams()
+        let params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
+
+        if(searchCriteria.ipAddress){
+            params = params.set('ip',searchCriteria.ipAddress);
+        }
+        if(searchCriteria.host){
+            params = params.set('host',searchCriteria.host)
+        }
+        if(searchCriteria.status){
+            params = params.set('status',searchCriteria.status);
+        }
+
+        
         return this.httpClient.get<Page<SuspectIpResponse>>(
             this.apiUrl + 'get-all',
             { headers: this.authService.getHeaders(), params }

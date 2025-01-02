@@ -27,7 +27,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 let errorMessage = 'Bilinmeyen bir hata oluştu.';
                 console.log('interceptor içine girdi!');
                 console.log(error);
-                if (error.error) {
+                if (error.message) {
                     errorMessage = error.error.message;
                 }
                 this.messageService.add({

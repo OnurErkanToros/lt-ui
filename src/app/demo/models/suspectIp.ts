@@ -5,7 +5,7 @@ export interface SuspectIpResponse{
     accessForbiddenNumber?:number;
     pattern?:string;
     createdAt?:Date;
-    status:string;
-    statusAt:Date;
-    statusBy:string;
+    status?:string;
+    statusAt?:Date;
+    statusBy?:string;
 }

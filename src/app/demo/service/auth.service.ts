@@ -11,7 +11,6 @@ import {jwtDecode} from 'jwt-decode';
 export class AuthService {
     private readonly TOKEN_KEY = 'authToken';
     private apiUrl = environment.apiUrl + 'authentication/';
-    private token:string;
     private username:string;
     constructor(private httpClient: HttpClient,
     ) {}
@@ -21,8 +20,8 @@ export class AuthService {
             authenticationRequest
         ).pipe(
             map((data) => {
-                const token = "Bearer " + data.token;
-                this.saveToken(token);
+                this.saveToken(data.token);
+                this.saveUsername(data.username);
                 return true;
             }),
             catchError((error) => {
@@ -33,7 +32,6 @@ export class AuthService {
     }
     saveToken(token: string): void {
         localStorage.setItem(this.TOKEN_KEY, token);
-        this.token=token;
     }
     
     saveUsername(username:string):void{
@@ -43,8 +41,7 @@ export class AuthService {
 
     logout(): void {
         localStorage.removeItem(this.TOKEN_KEY);
-        this.token=null;
-        this.username=null;
+        localStorage.removeItem("username");
     }
     
     getToken():string{
@@ -73,7 +70,7 @@ export class AuthService {
     getHeaders(): HttpHeaders {                
         return new HttpHeaders({
             'Content-Type': 'application/json',
-            'Authorization': this.token,
+            'Authorization': "Bearer "+this.getToken(),
         });
     }
 }

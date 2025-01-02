@@ -15,19 +15,31 @@ export class BannedIpService {
         private httpClient: HttpClient,
         private authService: AuthService
     ) {}
-    getAll(
+    getFiltered(
         page: number,
-        size: number
+        size: number,
+        searchCriteria:{ip?:string; ipType?:string}
     ): Observable<Page<BannedIpResponse>> {
-        const params = new HttpParams()
+        let params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
+
+        if(searchCriteria.ip){
+            params=params.set("ip",searchCriteria.ip)
+        }
+        if(searchCriteria.ipType){
+            params=params.set("ipType",searchCriteria.ipType)
+        }
+
         return this.httpClient.get<Page<BannedIpResponse>>(
             this.apiUrl + 'get-all',
             { headers: this.authService.getHeaders(), params }
         );
     }
-    getUntransferredCount():Observable<number>{
-        return this.httpClient.get<number>(this.apiUrl+'untransferred-count',{headers:this.authService.getHeaders()})
+    getUntransferredCount(): Observable<number> {
+        return this.httpClient.get<number>(
+            this.apiUrl + 'untransferred-count',
+            { headers: this.authService.getHeaders() }
+        );
     }
 }

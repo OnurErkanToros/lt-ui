@@ -10,6 +10,9 @@ import { PaginatorModule } from "primeng/paginator";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { CardModule } from "primeng/card";
 import { BannedIpRoutingModule } from "./banned-ip-routing.module";
+import { InputTextModule } from "primeng/inputtext";
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({    
     imports:[
@@ -22,7 +25,11 @@ import { BannedIpRoutingModule } from "./banned-ip-routing.module";
         PaginatorModule,
         ProgressSpinnerModule,
         CardModule,
-        BannedIpRoutingModule
+        BannedIpRoutingModule,
+        InputTextModule,
+        SelectButtonModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     declarations:[BannedIpComponent]
 })
