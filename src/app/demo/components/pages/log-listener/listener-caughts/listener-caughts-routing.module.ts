@@ -3,9 +3,11 @@ import { RouterModule } from '@angular/router';
 import { ListenerCaughtsComponent } from './listener-caughts.component';
 
 @NgModule({
-	imports: [RouterModule.forChild([
-		{ path: '', component: ListenerCaughtsComponent }
-	])],
-	exports: [RouterModule]
+    imports: [
+        RouterModule.forChild([
+            { path: '', component: ListenerCaughtsComponent },
+        ]),
+    ],
+    exports: [RouterModule],
 })
-export class ListenerCaughtsRoutingModule { }
+export class ListenerCaughtsRoutingModule {}

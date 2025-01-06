@@ -1,10 +1,8 @@
 import { MessageService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
 import { ServerService } from 'src/app/demo/service/server.service';
 import { ServerRequest, ServerResponse } from 'src/app/demo/models/server';
-import { DataResult, Result } from 'src/app/demo/models/result';
-import { Form, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-server',

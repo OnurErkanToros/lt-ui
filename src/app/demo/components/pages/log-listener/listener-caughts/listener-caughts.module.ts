@@ -27,7 +27,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
         FormsModule,
         FieldsetModule,
         ReactiveFormsModule,
-        SelectButtonModule
+        SelectButtonModule,
     ],
     declarations: [ListenerCaughtsComponent],
 })

@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
-import { PathLocationStrategy, LocationStrategy, registerLocaleData, CommonModule } from '@angular/common';
+import {
+    PathLocationStrategy,
+    LocationStrategy,
+    registerLocaleData,
+    CommonModule,
+} from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -19,7 +24,13 @@ registerLocaleData(localeTr);
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
-    imports: [AppRoutingModule, AppLayoutModule,ToastModule,ProgressSpinnerModule,CommonModule],
+    imports: [
+        AppRoutingModule,
+        AppLayoutModule,
+        ToastModule,
+        ProgressSpinnerModule,
+        CommonModule,
+    ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         DataViewModule,
@@ -27,8 +38,16 @@ registerLocaleData(localeTr);
         AuthService,
         PermissionService,
         { provide: LOCALE_ID, useValue: 'tr-TR' },
-        {provide:HTTP_INTERCEPTORS,useClass:HttpErrorInterceptor,multi:true},
-        {provide:HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true}
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpErrorInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoadingInterceptor,
+            multi: true,
+        },
     ],
     bootstrap: [AppComponent],
 })

@@ -4,14 +4,14 @@ import { LoadingService } from './demo/service/util/loading.service';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-    loading$=this.loadingService.loading$;
+    loading$ = this.loadingService.loading$;
     constructor(
         private primengConfig: PrimeNGConfig,
-        private loadingService:LoadingService
-    ) { }
+        private loadingService: LoadingService
+    ) {}
 
     ngOnInit() {
         this.primengConfig.ripple = true;

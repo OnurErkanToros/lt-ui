@@ -23,7 +23,7 @@ import { ListenerPatternRoutingModule } from './listener-pattern-routing.module'
         DialogModule,
         InputTextModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
     ],
     declarations: [ListenerPatternComponent],
 })

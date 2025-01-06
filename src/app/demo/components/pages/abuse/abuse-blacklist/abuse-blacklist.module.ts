@@ -19,9 +19,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         PaginatorModule,
         CardModule,
         ButtonModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
     ],
     declarations: [AbuseBlacklistComponent],
-    providers:[MessageService]
+    providers: [MessageService],
 })
-export class AbuseBlacklistModule { }
+export class AbuseBlacklistModule {}

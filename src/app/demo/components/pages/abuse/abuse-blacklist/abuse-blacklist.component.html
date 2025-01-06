@@ -1,12 +1,26 @@
-<p-toast/>
+<p-toast />
 <p-card header="Abuse Karalistesi">
     <p>
         Bu ekrandan Abuse'nin karalisteye aldığı ip adresleri inceleyebilir ve
-        onları kendi karalistenize alabilirsiniz. Kendi karalistenizde zaten bulunanları sistem otomatik eleyecektir.
+        onları kendi karalistenize alabilirsiniz. Kendi karalistenizde zaten
+        bulunanları sistem otomatik eleyecektir.
     </p>
     <div class="p-1 flex justify-content-end align-items-end flex-wrap">
-        <p-button label="Karalisteyi Güncelle" [raised]="true" severity="success" class="pr-1" (onClick)="updateBlackList($event)"/>
-        <p-button label="Yenileri Transfere Hazırla" [raised]="true" severity="info" class="pr-1" (onClick)="prepareBlackListForBanning()" [disabled]="countBlacklistNewStatus==0"/>
+        <p-button
+            label="Karalisteyi Güncelle"
+            [raised]="true"
+            severity="success"
+            class="pr-1"
+            (onClick)="updateBlackList($event)"
+        />
+        <p-button
+            label="Yenileri Transfere Hazırla"
+            [raised]="true"
+            severity="info"
+            class="pr-1"
+            (onClick)="prepareBlackListForBanning()"
+            [disabled]="countBlacklistNewStatus == 0"
+        />
     </div>
 
     <p-table
@@ -37,9 +51,9 @@
                     }}
                 </td>
                 <td>{{ getCountryNameByCountryCode(black.countryCode) }}</td>
-                <td>{{black.status}}</td>
-                <td>{{black.statusAt}}</td>
-                <td>{{black.statusBy}}</td>
+                <td>{{ black.status }}</td>
+                <td>{{ black.statusAt }}</td>
+                <td>{{ black.statusBy }}</td>
             </tr>
         </ng-template>
     </p-table>

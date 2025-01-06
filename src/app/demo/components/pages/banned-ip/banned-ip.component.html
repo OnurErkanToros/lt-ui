@@ -11,21 +11,19 @@
     <ng-template pTemplate="left">
         <p-button
             pRipple
-            severity="danger"
-            label="Seçili Olanları Sil"
-            icon="pi pi-trash"
-            (click)="deleteSelectedServers()"
-            class="mr-2"
-            [disabled]="!selectedBannedIpList || !selectedBannedIpList.length"
+            severity="info"
+            label="Veritabanı ve Dosyayı Eşitle"
+            (click)="syncDbAndFile()"
         />
     </ng-template>
+
     <ng-template pTemplate="right">
         <p-button
             pRipple
             severity="warning"
-            label="Seçili Olanlara Listeleri Gönder"
-            icon="pi pi-upload"
-            [disabled]="!selectedServers || !selectedServers.length"
+            label="Seçili Olanların Banı Kaldır"
+            [disabled]="!selectedBannedIpList || !selectedBannedIpList.length"
+            (click)="setUnbanIPList()"
         />
     </ng-template>
 </p-toolbar>
@@ -37,14 +35,14 @@
         [tableStyle]="{ 'min-width': '75rem' }"
         [rowHover]="true"
         dataKey="id"
+        [selectionMode]="'multiple'"
         [(selection)]="selectedBannedIpList"
     >
         <ng-template pTemplate="caption">
             <form [formGroup]="searchFormGroup" (ngSubmit)="searchFormSubmit()">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Banlanmışlar listesi</h5>
+                <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Banlanmışlar listesi</h5>
 
-                
                     <span class="p-input-icon-left ml-auto">
                         <i class="pi pi-search"></i>
                         <input
@@ -65,8 +63,8 @@
                     />
 
                     <p-button type="submit" class="ml-2">Ara</p-button>
-            </div>
-        </form>
+                </div>
+            </form>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
@@ -84,7 +82,7 @@
         <ng-template pTemplate="body" let-bannedIp>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="server" />
+                    <p-tableCheckbox [value]="bannedIp" />
                 </td>
                 <td>
                     {{ bannedIp.id }}
@@ -110,15 +108,10 @@
                         [rounded]="true"
                         [outlined]="true"
                         disable="true"
-                        (click)="deleteProduct(product)"
+                        (click)="setUnbanSingleIp(bannedIp)"
                     />
                 </td>
             </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                Kayıtlı {{ bannedIpList ? bannedIpList.length : 0 }} sunucu var.
-            </div>
         </ng-template>
     </p-table>
     <p-paginator
@@ -129,6 +122,6 @@
         [showCurrentPageReport]="true"
         [showJumpToPageDropdown]="false"
         [rowsPerPageOptions]="[10, 25, 50]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+        currentPageReportTemplate="{totalRecords} kaydın {first} ile {last} arası gösteriliyor."
     />
 </p-card>

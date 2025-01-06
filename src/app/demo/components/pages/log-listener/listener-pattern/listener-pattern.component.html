@@ -78,11 +78,13 @@
     draggable="false"
 >
     <form [formGroup]="patternForm" (ngSubmit)="patternFormSubmit()">
-
-        <div *ngIf="patternForm.get('pattern')?.invalid && patternForm.get('pattern')?.touched">
-            <small>
-                Lütfen pattern giriniz!
-            </small>
+        <div
+            *ngIf="
+                patternForm.get('pattern')?.invalid &&
+                patternForm.get('pattern')?.touched
+            "
+        >
+            <small> Lütfen pattern giriniz! </small>
         </div>
         <div class="flex align-items-center gap-3 mb-3">
             <label for="pattern" class="font-semibold w-6rem">Pattern</label>

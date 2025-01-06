@@ -5,10 +5,19 @@
         <p-button
             pRipple
             severity="warning"
-            label="Seçili Olanları Transfere Hazırla"
-            icon="pi pi-upload"
-            (click)="prepareSuspectIpForBan()"
-            [disabled]="!selectedSuspectIp || !selectedSuspectIp.length"
+            label="Banla"
+            icon="pi pi-plus"
+            (click)="setBanSuspectIp()"
+            [disabled]="getSelectedIpListType() !== 'NEW'"
+        />
+        <p-button
+            class="ml-2"
+            pRipple
+            severity="danger"
+            label="Ban kaldır"
+            icon="pi pi-minus"
+            (click)="setUnbanSuspectIp()"
+            [disabled]="getSelectedIpListType() !== 'BANNED'"
         />
     </ng-template>
 </p-toolbar>
@@ -27,41 +36,41 @@
 >
     <ng-template pTemplate="caption">
         <form [formGroup]="searchFormGroup" (ngSubmit)="searchSubmit()">
-        <div class="flex align-items-center justify-content-between">
-            <h5 class="m-0">Log Dinleyicinin Yakaladığı IP Adresleri</h5>
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Log Dinleyicinin Yakaladığı IP Adresleri</h5>
 
-            <span class="p-input-icon-left ml-auto">
-                <i class="pi pi-search"></i>
-                <input
-                    pInputText
-                    type="text"
-                    formControlName="ip"
-                    placeholder="IP girebilirsiniz"
+                <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input
+                        pInputText
+                        type="text"
+                        formControlName="ip"
+                        placeholder="IP girebilirsiniz"
+                    />
+                </span>
+
+                <span class="p-input-icon-left ml-2">
+                    <i class="pi pi-search"></i>
+                    <input
+                        pInputText
+                        type="text"
+                        formControlName="host"
+                        placeholder="Host girebilirsiniz"
+                    />
+                </span>
+
+                <p-selectButton
+                    [options]="statusOptions"
+                    formControlName="status"
+                    [multiple]="false"
+                    optionLabel="name"
+                    optionValue="value"
+                    class="ml-2"
                 />
-            </span>
 
-            <span class="p-input-icon-left ml-2">
-                <i class="pi pi-search"></i>
-                <input
-                    pInputText
-                    type="text"
-                    formControlName="host"
-                    placeholder="Host girebilirsiniz"
-                />
-            </span>
-
-            <p-selectButton
-                [options]="statusOptions"
-                formControlName="status"
-                [multiple]="false"
-                optionLabel="name"
-                optionValue="value"
-                class="ml-2"
-            />
-
-            <p-button type="submit" class="ml-2">Ara</p-button>
-        </div>
-    </form>
+                <p-button type="submit" class="ml-2">Ara</p-button>
+            </div>
+        </form>
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
@@ -205,54 +214,82 @@
     </div>
 </p-dialog>
 
-<p-dialog header="{{abuseCheckResponse.ipAddress}} sonucu" [modal]="true" [(visible)]="visibleAbuseDetail" draggable="false" maximizable="true" >
+<p-dialog
+    header="{{ abuseCheckResponse.ipAddress }} sonucu"
+    [modal]="true"
+    [(visible)]="visibleAbuseDetail"
+    draggable="false"
+    maximizable="true"
+>
     <div class="flex align-items-center gap-3 mb-3">
         <label class="font-semibold w-6rem"><strong>IP Adresi:</strong></label>
-        <span>{{abuseCheckResponse.ipAddress}}</span>
+        <span>{{ abuseCheckResponse.ipAddress }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>IP Versiyon:</strong></label>
-        <span>{{abuseCheckResponse.ipVersion}}</span>
+        <label class="font-semibold w-6rem"
+            ><strong>IP Versiyon:</strong></label
+        >
+        <span>{{ abuseCheckResponse.ipVersion }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>İnternet Sağlayıcı:</strong></label>
-        <span>{{abuseCheckResponse.isp}}</span>
+        <label class="font-semibold w-6rem"
+            ><strong>İnternet Sağlayıcı:</strong></label
+        >
+        <span>{{ abuseCheckResponse.isp }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label class="font-semibold w-6rem"><strong>Ülke:</strong></label>
-        <span>{{getCountryNameByCountryCode(abuseCheckResponse.countryCode)}}</span>
+        <span>{{
+            getCountryNameByCountryCode(abuseCheckResponse.countryCode)
+        }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Toplam Raporlama Sayısı:</strong></label>
-        <span>{{abuseCheckResponse.totalReports}}</span>
+        <label class="font-semibold w-6rem"
+            ><strong>Toplam Raporlama Sayısı:</strong></label
+        >
+        <span>{{ abuseCheckResponse.totalReports }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Kaç Farklı Kişi Raporladı:</strong></label>
-        <span>{{abuseCheckResponse.numDistinctUsers}}</span>
+        <label class="font-semibold w-6rem"
+            ><strong>Kaç Farklı Kişi Raporladı:</strong></label
+        >
+        <span>{{ abuseCheckResponse.numDistinctUsers }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Abuse Risk Puanı:</strong></label>
-        <span>{{abuseCheckResponse.abuseConfidenceScore}}</span>
+        <label class="font-semibold w-6rem"
+            ><strong>Abuse Risk Puanı:</strong></label
+        >
+        <span>{{ abuseCheckResponse.abuseConfidenceScore }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label class="font-semibold w-6rem"><strong>Domain:</strong></label>
-        <span>{{abuseCheckResponse.domain}}</span>
+        <span>{{ abuseCheckResponse.domain }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label class="font-semibold w-6rem"><strong>Public mi?:</strong></label>
-        <span>{{abuseCheckResponse.isPublic === true? 'Evet' : 'Hayır' }}</span>
+        <span>{{
+            abuseCheckResponse.isPublic === true ? "Evet" : "Hayır"
+        }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label class="font-semibold w-6rem"><strong>Tor mu?:</strong></label>
-        <span>{{abuseCheckResponse.isTor === true? 'Evet' : 'Hayır' }}</span>
+        <span>{{ abuseCheckResponse.isTor === true ? "Evet" : "Hayır" }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Abuse Beyaz Listesinde mi?:</strong></label>
-        <span>{{abuseCheckResponse.isWhitelisted === true? 'Evet' : 'Hayır' }}</span>
+        <label class="font-semibold w-6rem"
+            ><strong>Abuse Beyaz Listesinde mi?:</strong></label
+        >
+        <span>{{
+            abuseCheckResponse.isWhitelisted === true ? "Evet" : "Hayır"
+        }}</span>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Abuse Beyaz Listesinde mi?:</strong></label>
-        <span>{{abuseCheckResponse.isWhitelisted === true? 'Evet' : 'Hayır' }}</span>
+        <label class="font-semibold w-6rem"
+            ><strong>Abuse Beyaz Listesinde mi?:</strong></label
+        >
+        <span>{{
+            abuseCheckResponse.isWhitelisted === true ? "Evet" : "Hayır"
+        }}</span>
     </div>
     <div class="flex justify-content-end gap-2">
         <p-button label="Listeye Ekle" />

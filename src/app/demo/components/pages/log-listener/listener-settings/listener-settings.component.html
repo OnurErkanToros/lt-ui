@@ -1,17 +1,99 @@
-<p-toast/>
+<p-toast />
 <div class="progress-spinner" *ngIf="loading">
     <p-progressSpinner
         styleClass="w-4rem h-4rem "
         strokeWidth="7"
         animationDuration=".5s"
-        >
+    >
     </p-progressSpinner>
 </div>
-<p-card header="Log Listener Anahtarı">
+<p-card header="Log Dinleyici Ayarları">
     <p-toggleButton
-    [(ngModel)]="checked"
-    onLabel="Açık"
-    offLabel="Kapalı"
-    (onChange)="onChange()"
+        [(ngModel)]="checked"
+        onLabel="Açık"
+        offLabel="Kapalı"
+        (onChange)="onChange()"
+        [disabled]="isDisabled"
     />
+    <p-divider align="center" type="solid"> Ayarlar </p-divider>
+    <div class="p-fluid grid formgrid">
+        <!-- Input: Süre Ayarı -->
+        <div class="field col-12 md:col-6">
+            <label for="duration">Süre Ayarı</label>
+            <input
+                pInputText
+                id="duration"
+                type="number"
+                [(ngModel)]="findtime"
+                placeholder="Süreyi girin"
+                [disabled]="isDisabled"
+            />
+        </div>
+
+        <!-- Dropdown: Log Listener Süre Tipi -->
+        <div class="field col-12 md:col-6">
+            <label for="logDurationType">Süre Tipi</label>
+            <p-dropdown
+                [options]="findtimetypeList"
+                [(ngModel)]="findtimetype"
+                placeholder="Süre Tipi Seçin"
+                optionLabel="name"
+                optionValue="value"
+                [disabled]="isDisabled"
+                [autoDisplayFirst]="false"
+            >
+            </p-dropdown>
+        </div>
+
+        <!-- Input: Maksimum Deneme Sayısı -->
+        <div class="field col-12 md:col-6">
+            <label for="maxAttempts">Maksimum Deneme Sayısı</label>
+            <input
+                pInputText
+                id="maxAttempts"
+                type="number"
+                [(ngModel)]="maxretry"
+                placeholder="Deneme sayısını girin"
+                [disabled]="isDisabled"
+            />
+        </div>
+
+        <!-- Input: Log Dosyası Konumu -->
+        <div class="field col-12 md:col-6">
+            <label for="logFilePath">Log Dosyası Konumu</label>
+            <input
+                pInputText
+                id="logFilePath"
+                type="text"
+                [(ngModel)]="logFilePath"
+                placeholder="Log dosyasının yolunu girin"
+                [disabled]="isDisabled"
+            />
+        </div>
+
+        <!-- Input: blok.conf Konumu -->
+        <div class="field col-12 md:col-6">
+            <label for="blockConfPath">blok.conf Konumu</label>
+            <input
+                pInputText
+                id="blockConfPath"
+                type="text"
+                [(ngModel)]="blockConfPath"
+                placeholder="blok.conf dosyasının yolunu girin"
+                [disabled]="isDisabled"
+            />
+        </div>
+
+        <!-- Save Button -->
+        <div class="field col-12">
+            <button
+                pButton
+                type="button"
+                label="Kaydet"
+                class="p-button-success"
+                (click)="saveSettings()"
+                [disabled]="isDisabled"
+            ></button>
+        </div>
+    </div>
 </p-card>

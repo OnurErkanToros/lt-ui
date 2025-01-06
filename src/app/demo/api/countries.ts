@@ -1,4 +1,4 @@
-export const countries: { countryName: string; countryCode: string; }[] = [
+export const countries: { countryName: string; countryCode: string }[] = [
     { countryName: 'Afganistan', countryCode: 'AF' },
     { countryName: 'Almanya', countryCode: 'DE' },
     { countryName: 'Amerika Birleşik Devletleri', countryCode: 'US' },
@@ -204,5 +204,5 @@ export const countries: { countryName: string; countryCode: string; }[] = [
     { countryName: 'Yeşil Burun Adaları', countryCode: 'CV' },
     { countryName: 'Yunanistan', countryCode: 'GR' },
     { countryName: 'Zambiya', countryCode: 'ZM' },
-    { countryName: 'Zimbabve', countryCode: 'ZW' }
+    { countryName: 'Zimbabve', countryCode: 'ZW' },
 ];

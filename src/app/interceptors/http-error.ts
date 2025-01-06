@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../demo/service/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
@@ -16,7 +17,8 @@ import { AuthService } from '../demo/service/auth.service';
 export class HttpErrorInterceptor implements HttpInterceptor {
     constructor(
         private messageService: MessageService,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {}
     intercept(
         req: HttpRequest<any>,
@@ -25,6 +27,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError((error: HttpErrorResponse) => {
                 let errorMessage = 'Bilinmeyen bir hata oluştu.';
+                if (error.status === 403) {
+                    this.authService.logout();
+                    this.router.navigate(['/auth']);
+                }
                 console.log('interceptor içine girdi!');
                 console.log(error);
                 if (error.message) {

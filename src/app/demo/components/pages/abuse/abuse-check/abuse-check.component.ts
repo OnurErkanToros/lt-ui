@@ -13,11 +13,11 @@ export class AbuseCheckComponent {
     ipAddress: string = '';
     loading$ = this.loadingService.loading$;
     abuseCheckResponse: AbuseCheckResponse = {};
-    visible=false;
+    visible = false;
     constructor(
         private messageService: MessageService,
         private abuseService: AbuseService,
-        private loadingService:LoadingService
+        private loadingService: LoadingService
     ) {}
 
     checkIpAddress(event: MouseEvent) {
@@ -28,16 +28,14 @@ export class AbuseCheckComponent {
                     next: (data) => {
                         if (data) {
                             this.abuseCheckResponse = data;
-                            this.visible=true;
+                            this.visible = true;
                         } else {
-                        
-                                this.messageService.add({
-                                    severity: 'error',
-                                    detail: 'Sorgulama başarısız.'
-                                });
-                            
+                            this.messageService.add({
+                                severity: 'error',
+                                detail: 'Sorgulama başarısız.',
+                            });
                         }
-                    }
+                    },
                 });
         } else {
             this.messageService.add({
@@ -47,25 +45,23 @@ export class AbuseCheckComponent {
         }
     }
 
-    prepareCheckIpForBan(ip:string){
-        this.abuseService.prepareCheckIpForBanning({ip:ip}).subscribe(
-            {
-                next:data=>{
-                    if(data){
-                        this.messageService.add({
-                            detail:'Banlanacaklar listesine eklendi.',
-                            severity:'success'
-                        })
-                    }else{
-                        this.messageService.add({
-                            detail:'Banlanacaklar listesine eklenemedi.',
-                            severity:'error'
-                        })
-                    };
+    prepareCheckIpForBan(ip: string) {
+        this.abuseService.prepareCheckIpForBanning({ ip: ip }).subscribe({
+            next: (data) => {
+                if (data) {
+                    this.messageService.add({
+                        detail: 'Banlanacaklar listesine eklendi.',
+                        severity: 'success',
+                    });
+                } else {
+                    this.messageService.add({
+                        detail: 'Banlanacaklar listesine eklenemedi.',
+                        severity: 'error',
+                    });
                 }
-            }
-        );
-        this.visible=false;
+            },
+        });
+        this.visible = false;
     }
     private validateIPAddress(): boolean {
         const ipPattern = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;

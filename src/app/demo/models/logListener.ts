@@ -1,3 +1,3 @@
-export interface LogListenerStatus{
-    status?:string
+export interface LogListenerStatus {
+    status?: string;
 }

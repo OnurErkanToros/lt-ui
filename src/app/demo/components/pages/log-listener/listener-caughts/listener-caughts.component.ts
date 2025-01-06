@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { er } from '@fullcalendar/core/internal-common';
+import { el, er } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
 import { AbuseCheckResponse } from 'src/app/demo/models/abuse';
 import { BanIpRequest } from 'src/app/demo/models/banned-ip';
@@ -30,7 +30,7 @@ export class ListenerCaughtsComponent implements OnInit {
     page: number = 0;
     rows = 1;
     totalRecords = 0;
-    searchFormGroup:FormGroup
+    searchFormGroup: FormGroup;
 
     searchCriteria: {
         ipAddress: string;
@@ -41,11 +41,11 @@ export class ListenerCaughtsComponent implements OnInit {
         host: '',
         status: '',
     };
-    
 
     statusOptions: any[] = [
         { name: 'BANLANMIŞ', value: 'BANNED' },
         { name: 'BANLANMAMIŞ', value: 'NEW' },
+        { name: 'BANI KALDIRILMIŞ', value: 'CANCEL_BAN' },
     ];
 
     ngOnInit(): void {
@@ -60,50 +60,70 @@ export class ListenerCaughtsComponent implements OnInit {
     constructor(
         private suspectIpService: SuspectIpService,
         private messageService: MessageService,
-        private abuseService:AbuseService,
-        private formBuilder:FormBuilder
+        private abuseService: AbuseService,
+        private formBuilder: FormBuilder
     ) {
-        this.searchFormGroup=formBuilder.group({
-            ip:[''],
-            host:[''],
-            status:['']
-        })
+        this.searchFormGroup = formBuilder.group({
+            ip: [''],
+            host: [''],
+            status: [''],
+        });
     }
 
     loadData() {
         this.loading = true;
-        this.suspectIpService.getFiltered(this.page, this.size,this.searchCriteria).subscribe({
-            next: (data) => {
-                if (data) {
-                    this.suspectIpList = data.content;
-                    this.totalRecords = data.totalElements;
-                } else {
-                    this.messageService.add({
-                        severity: 'error',
-                        detail: 'Bir sorun oluştu!',
-                    });
-                }
-                this.loading = false;
-            },
-        });
-    }
-    prepareSuspectIpForBan() {
-        this.prepareBadRequestIpList();
         this.suspectIpService
-            .prepareSuspectIpForBan(this.banIpRequestList)
+            .getFiltered(this.page, this.size, this.searchCriteria)
             .subscribe({
                 next: (data) => {
                     if (data) {
-                        this.messageService.add({
-                            severity: 'success',
-                            detail: 'Seçilenler transfere hazırlandı.',
-                        });
+                        this.suspectIpList = data.content;
+                        this.totalRecords = data.totalElements;
                     } else {
                         this.messageService.add({
                             severity: 'error',
                             detail: 'Bir sorun oluştu!',
                         });
                     }
+                    this.loading = false;
+                },
+            });
+    }
+    setBanSuspectIp() {
+        this.prepareBadRequestIpList();
+        this.suspectIpService
+            .setBanSuspectIps(this.banIpRequestList)
+            .subscribe({
+                next: (data) => {
+                    if (data) {
+                        this.messageService.add({
+                            severity: 'success',
+                            detail: 'Seçilenler banlandı.',
+                        });
+                        this.loadData();
+                        this.selectedSuspectIpList = [];
+                    } else {
+                        this.messageService.add({
+                            severity: 'error',
+                            detail: 'Bir sorun oluştu!',
+                        });
+                    }
+                },
+            });
+    }
+
+    setUnbanSuspectIp() {
+        this.prepareBadRequestIpList();
+        this.suspectIpService
+            .setUnBanSuspectIps(this.banIpRequestList)
+            .subscribe({
+                next: (data) => {
+                    this.messageService.add({
+                        severity: 'success',
+                        detail: 'Seçilenlerin banı kaldırıldı.',
+                    });
+                    this.loadData();
+                    this.selectedSuspectIpList = [];
                 },
             });
     }
@@ -122,7 +142,7 @@ export class ListenerCaughtsComponent implements OnInit {
         return getCountryNameByCountryCode(countryCode);
     }
 
-    checkIpAddress(ip:string) {
+    checkIpAddress(ip: string) {
         this.abuseService
             .checkIp({ ipAddress: ip, maxAgeInDays: 200 })
             .subscribe({
@@ -139,11 +159,34 @@ export class ListenerCaughtsComponent implements OnInit {
                 },
             });
     }
-    
-    searchSubmit(){
-        this.searchCriteria.ipAddress=this.searchFormGroup.get('ip').value;
-        this.searchCriteria.host=this.searchFormGroup.get('host').value;
-        this.searchCriteria.status=this.searchFormGroup.get('status').value;
+
+    searchSubmit() {
+        this.searchCriteria.ipAddress = this.searchFormGroup.get('ip').value;
+        this.searchCriteria.host = this.searchFormGroup.get('host').value;
+        this.searchCriteria.status = this.searchFormGroup.get('status').value;
         this.loadData();
+    }
+
+    getSelectedIpListType(): string {
+        if (
+            this.selectedSuspectIpList.some(
+                (selected) => selected.status === 'BANNED'
+            )
+        ) {
+            console.log('banned');
+            return 'BANNED';
+        } else if (
+            this.selectedSuspectIpList.some(
+                (selected) => selected.status === 'NEW'
+            ) ||
+            this.selectedSuspectIpList.some(
+                (selected) => selected.status === 'CANCEL_BAN'
+            )
+        ) {
+            console.log('new');
+            return 'NEW';
+        } else {
+            return '';
+        }
     }
 }

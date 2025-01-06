@@ -11,7 +11,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 
-
 @NgModule({
     imports: [
         AbuseCheckRoutingModule,
@@ -22,9 +21,9 @@ import { DialogModule } from 'primeng/dialog';
         ToastModule,
         InputTextModule,
         ProgressSpinnerModule,
-        DialogModule
+        DialogModule,
     ],
     declarations: [AbuseCheckComponent],
-    providers:[MessageService]
+    providers: [MessageService],
 })
-export class AbuseCheckModule { }
+export class AbuseCheckModule {}

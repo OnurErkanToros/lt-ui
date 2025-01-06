@@ -1,8 +1,8 @@
-export interface AbuseCheckRequest{
-    maxAgeInDays?:number;
-    ipAddress?:string;
+export interface AbuseCheckRequest {
+    maxAgeInDays?: number;
+    ipAddress?: string;
 }
-export interface AbuseCheckResponse{
+export interface AbuseCheckResponse {
     ipAddress?: string;
     ipVersion?: number;
     isPublic?: boolean;
@@ -23,17 +23,17 @@ export interface AbuseBlackListResponse {
     ipAddress?: string;
     lastReportedAt?: Date;
     countryCode?: string;
-    status?:string;
-    statusBy?:string;
-    statusAt?:Date;
+    status?: string;
+    statusBy?: string;
+    statusAt?: Date;
 }
-export interface AbuseDbKeyRequest{
-    abuseKey?:string;
+export interface AbuseDbKeyRequest {
+    abuseKey?: string;
 }
-export interface AbuseDbKeyResponse{
-    id?:number;
-    abuseKey?:string;
-    createdAt?:Date;
-    createdBy?:string;
-    isActive?:boolean;
+export interface AbuseDbKeyResponse {
+    id?: number;
+    abuseKey?: string;
+    createdAt?: Date;
+    createdBy?: string;
+    isActive?: boolean;
 }

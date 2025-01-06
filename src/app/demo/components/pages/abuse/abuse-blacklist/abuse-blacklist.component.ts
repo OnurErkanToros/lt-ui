@@ -6,7 +6,7 @@ import { LoadingService } from 'src/app/demo/service/util/loading.service';
 import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
 @Component({
     templateUrl: './abuse-blacklist.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
 })
 export class AbuseBlacklistComponent implements OnInit {
     blacklist: AbuseBlackListResponse[] = [];
@@ -17,7 +17,11 @@ export class AbuseBlacklistComponent implements OnInit {
     rows = 1;
     totalRecords = 0;
     loading$ = this.loadingService.loading$;
-    constructor(private abuseService: AbuseService, private messageService: MessageService, private loadingService:LoadingService) { }
+    constructor(
+        private abuseService: AbuseService,
+        private messageService: MessageService,
+        private loadingService: LoadingService
+    ) {}
 
     ngOnInit() {
         this.loadData();
@@ -30,68 +34,68 @@ export class AbuseBlacklistComponent implements OnInit {
     }
     loadData() {
         this.checkThereIsNewStatus();
-        this.abuseService.getAllBlackList(this.page, this.size)
-            .subscribe({
-                next: (data) => {
-                    if (data) {
-                        this.blacklist = data.content;
-                        this.totalRecords = data.totalElements;
-                    } else {
-                        this.messageService.add({
-                            severity: 'error',
-                            detail: 'Bir sorun var.'
-                        })
-                    }
-                },
-            });
+        this.abuseService.getAllBlackList(this.page, this.size).subscribe({
+            next: (data) => {
+                if (data) {
+                    this.blacklist = data.content;
+                    this.totalRecords = data.totalElements;
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        detail: 'Bir sorun var.',
+                    });
+                }
+            },
+        });
     }
     updateBlackList(event: MouseEvent) {
-        this.abuseService.refreshBlackList()
-            .subscribe({next:data => {
+        this.abuseService.refreshBlackList().subscribe({
+            next: (data) => {
                 if (data) {
                     this.loadData();
                 } else {
-                    this.messageService.add({ severity: 'error', detail: 'Bir sorun var.' })
+                    this.messageService.add({
+                        severity: 'error',
+                        detail: 'Bir sorun var.',
+                    });
                 }
-                
-            },complete:()=>{
-            }}
-            )
-            
+            },
+            complete: () => {},
+        });
     }
 
     checkThereIsNewStatus() {
         this.abuseService.getCountBlacklistStatusNew().subscribe({
-            next: data => {
-                if (data>0) {
+            next: (data) => {
+                if (data > 0) {
                     this.countBlacklistNewStatus = data;
                     if (this.countBlacklistNewStatus > 0) {
                         this.messageService.add({
                             detail: 'Transfere hazılanmamış kayıtlar mevcut!',
-                            severity: 'warn'
-                        })
-                    };
+                            severity: 'warn',
+                        });
+                    }
                 }
-            }
-        })
+            },
+        });
     }
 
     prepareBlackListForBanning() {
         this.abuseService.prepareBlackListForBanning().subscribe({
-            next: data => {
-                if(data){
+            next: (data) => {
+                if (data) {
                     this.messageService.add({
-                        severity:'success',
-                        detail:'IP\'ler transfere hazırlandı.'
-                    })
-                }else{
+                        severity: 'success',
+                        detail: "IP'ler transfere hazırlandı.",
+                    });
+                } else {
                     this.messageService.add({
-                        severity:'success',
-                        detail:'IP\'ler transfere hazırlanamadı. Bir sorun oluştu.'
-                    })
+                        severity: 'success',
+                        detail: "IP'ler transfere hazırlanamadı. Bir sorun oluştu.",
+                    });
                 }
-            }
-        })
+            },
+        });
     }
 
     getCountryNameByCountryCode(countryCode: string) {

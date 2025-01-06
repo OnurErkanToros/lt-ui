@@ -17,8 +17,8 @@ import { InputTextModule } from 'primeng/inputtext';
         InputTextModule,
         FormsModule,
         PasswordModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
     ],
-    declarations: [LoginComponent]
+    declarations: [LoginComponent],
 })
-export class LoginModule { }
+export class LoginModule {}

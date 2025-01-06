@@ -25,7 +25,7 @@ export class LoginComponent {
         public layoutService: LayoutService,
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private router:Router
+        private router: Router
     ) {
         this.formGroup = this.formBuilder.group({
             username: ['', [Validators.required]],
@@ -34,18 +34,20 @@ export class LoginComponent {
     }
 
     formSubmit() {
-        this.authService.login({
-            username: this.formGroup.get('username').value,
-            password: this.formGroup.get('password').value,
-        }).subscribe({
-            next: (isSuccess) => {
-                if (isSuccess) {
-                    this.router.navigate(['/']);
-                }
-            },
-            error: (err) => {
-                console.error("Login failed", err);
-            }
-        });
+        this.authService
+            .login({
+                username: this.formGroup.get('username').value,
+                password: this.formGroup.get('password').value,
+            })
+            .subscribe({
+                next: (isSuccess) => {
+                    if (isSuccess) {
+                        this.router.navigate(['/']);
+                    }
+                },
+                error: (err) => {
+                    console.error('Login failed', err);
+                },
+            });
     }
 }

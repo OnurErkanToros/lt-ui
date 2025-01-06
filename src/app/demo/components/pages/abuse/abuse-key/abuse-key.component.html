@@ -36,20 +36,17 @@
     </ng-template>
     <ng-template pTemplate="body" let-key>
         <tr>
-            
             <td>
                 {{ key.abuseKey }}
             </td>
-            
+
             <td>
-                {{ key.isActive ? 'Aktif':'Deaktif' }}
+                {{ key.isActive ? "Aktif" : "Deaktif" }}
             </td>
             <td>
-                {{
-                    key.createdAt | date : "dd MMMM yyyy, EEEE HH:mm"
-                }}
+                {{ key.createdAt | date : "dd MMMM yyyy, EEEE HH:mm" }}
             </td>
-            
+
             <td>
                 {{ key.createdBy }}
             </td>
@@ -81,9 +78,7 @@
     draggable="false"
 >
     <form #form="ngForm" (ngSubmit)="addNewAbuseKey(form)">
-        <span class="p-text-secondary block mb-5"
-            >Key giriniz</span
-        >
+        <span class="p-text-secondary block mb-5">Key giriniz</span>
         <div class="flex align-items-center gap-3 mb-3">
             <label for="address" class="font-semibold w-6rem">Key</label>
             <input

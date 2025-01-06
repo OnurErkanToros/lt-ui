@@ -3,9 +3,9 @@ import { RouterModule } from '@angular/router';
 import { AbuseCheckComponent } from './abuse-check.component';
 
 @NgModule({
-	imports: [RouterModule.forChild([
-		{ path: '', component: AbuseCheckComponent }
-	])],
-	exports: [RouterModule]
+    imports: [
+        RouterModule.forChild([{ path: '', component: AbuseCheckComponent }]),
+    ],
+    exports: [RouterModule],
 })
-export class AbuseCheckRoutingModule { }
+export class AbuseCheckRoutingModule {}

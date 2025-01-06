@@ -12,7 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { ListenerSettingsRoutingModule } from './listener-settings-routing.module';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { CardModule } from 'primeng/card';
-
+import { DropdownModule } from 'primeng/dropdown';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
     imports: [
@@ -27,7 +28,9 @@ import { CardModule } from 'primeng/card';
         DialogModule,
         InputTextModule,
         FormsModule,
-        CardModule
+        CardModule,
+        DropdownModule,
+        DividerModule,
     ],
     declarations: [ListenerSettingsComponent],
 })

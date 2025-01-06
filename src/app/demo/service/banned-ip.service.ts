@@ -18,17 +18,17 @@ export class BannedIpService {
     getFiltered(
         page: number,
         size: number,
-        searchCriteria:{ip?:string; ipType?:string}
+        searchCriteria: { ip?: string; ipType?: string }
     ): Observable<Page<BannedIpResponse>> {
         let params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
 
-        if(searchCriteria.ip){
-            params=params.set("ip",searchCriteria.ip)
+        if (searchCriteria.ip) {
+            params = params.set('ip', searchCriteria.ip);
         }
-        if(searchCriteria.ipType){
-            params=params.set("ipType",searchCriteria.ipType)
+        if (searchCriteria.ipType) {
+            params = params.set('ipType', searchCriteria.ipType);
         }
 
         return this.httpClient.get<Page<BannedIpResponse>>(
@@ -41,5 +41,11 @@ export class BannedIpService {
             this.apiUrl + 'untransferred-count',
             { headers: this.authService.getHeaders() }
         );
+    }
+
+    syncDBandFile() {
+        return this.httpClient.post<boolean>(this.apiUrl + 'sync', null, {
+            headers: this.authService.getHeaders(),
+        });
     }
 }
