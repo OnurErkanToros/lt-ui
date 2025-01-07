@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { catchError, Observable, throwError } from 'rxjs';
-import { AuthService } from '../demo/service/auth.service';
+import { AuthService } from '../main/service/auth.service';
 import { Router } from '@angular/router';
 
 @Injectable({

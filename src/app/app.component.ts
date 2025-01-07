@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
-import { LoadingService } from './demo/service/util/loading.service';
+import { LoadingService } from './main/service/util/loading.service';
 
 @Component({
     selector: 'app-root',

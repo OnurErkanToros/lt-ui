@@ -1,7 +1,7 @@
 import { MessageService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
-import { ServerService } from 'src/app/demo/service/server.service';
-import { ServerRequest, ServerResponse } from 'src/app/demo/models/server';
+import { ServerService } from 'src/app/main/service/server.service';
+import { ServerRequest, ServerResponse } from 'src/app/main/models/server';
 import { NgForm } from '@angular/forms';
 
 @Component({

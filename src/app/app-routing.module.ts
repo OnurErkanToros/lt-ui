@@ -1,6 +1,6 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
+import { NotfoundComponent } from './main/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NoAuthGuard } from './guards/no-auth.guard';
@@ -18,14 +18,14 @@ import { NoAuthGuard } from './guards/no-auth.guard';
                             path: 'dashboard',
                             loadChildren: () =>
                                 import(
-                                    './demo/components/dashboard/dashboard.module'
+                                    './main/components/dashboard/dashboard.module'
                                 ).then((m) => m.DashboardModule),
                         },
                         {
                             path: 'pages',
                             loadChildren: () =>
                                 import(
-                                    './demo/components/pages/pages.module'
+                                    './main/components/pages/pages.module'
                                 ).then((m) => m.PagesModule),
                         },
                     ],
@@ -34,7 +34,7 @@ import { NoAuthGuard } from './guards/no-auth.guard';
                     path: 'auth',
                     canActivate: [NoAuthGuard],
                     loadChildren: () =>
-                        import('./demo/components/auth/auth.module').then(
+                        import('./main/components/auth/auth.module').then(
                             (m) => m.AuthModule
                         ),
                 },

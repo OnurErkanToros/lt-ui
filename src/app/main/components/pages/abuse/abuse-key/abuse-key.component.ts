@@ -4,9 +4,9 @@ import { MessageService } from 'primeng/api';
 import {
     AbuseDbKeyRequest,
     AbuseDbKeyResponse,
-} from 'src/app/demo/models/abuse';
-import { AbuseKeyService } from 'src/app/demo/service/abuseKey.service';
-import { LoadingService } from 'src/app/demo/service/util/loading.service';
+} from 'src/app/main/models/abuse';
+import { AbuseKeyService } from 'src/app/main/service/abuseKey.service';
+import { LoadingService } from 'src/app/main/service/util/loading.service';
 
 @Component({
     selector: 'app-abuse-key',

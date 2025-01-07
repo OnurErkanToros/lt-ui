@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { el, er } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
-import { AbuseCheckResponse } from 'src/app/demo/models/abuse';
-import { BanIpRequest } from 'src/app/demo/models/banned-ip';
-import { Page } from 'src/app/demo/models/page';
-import { DataResult } from 'src/app/demo/models/result';
-import { SuspectIpResponse } from 'src/app/demo/models/suspectIp';
-import { AbuseService } from 'src/app/demo/service/abuse.service';
-import { SuspectIpService } from 'src/app/demo/service/suspect-ip.service';
-import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
+import { AbuseCheckResponse } from 'src/app/main/models/abuse';
+import { BanIpRequest } from 'src/app/main/models/banned-ip';
+import { Page } from 'src/app/main/models/page';
+import { DataResult } from 'src/app/main/models/result';
+import { SuspectIpResponse } from 'src/app/main/models/suspectIp';
+import { AbuseService } from 'src/app/main/service/abuse.service';
+import { SuspectIpService } from 'src/app/main/service/suspect-ip.service';
+import { getCountryNameByCountryCode } from 'src/app/main/util/country-util';
 
 @Component({
     selector: 'app-listener-caughts',

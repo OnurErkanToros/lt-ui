@@ -4,8 +4,8 @@ import { MessageService } from 'primeng/api';
 import {
     LogListenerRegexRequest,
     LogListenerRegexResponse,
-} from 'src/app/demo/models/regex';
-import { RegexService } from 'src/app/demo/service/regex.service';
+} from 'src/app/main/models/regex';
+import { RegexService } from 'src/app/main/service/regex.service';
 
 @Component({
     selector: 'app-listener-pattern',

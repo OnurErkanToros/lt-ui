@@ -1,4 +1,4 @@
-import { ServerRequest, ServerResponse } from './../models/server';
+import { ServerRequest, ServerResponse } from '../models/server';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';

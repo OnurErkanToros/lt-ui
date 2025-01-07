@@ -1,11 +1,7 @@
-import { dA } from '@fullcalendar/core/internal-common';
-import { DataResult } from './../../../../models/result';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { LogListenerStatus } from 'src/app/demo/models/logListener';
-import { LogListenerService } from 'src/app/demo/service/logListener.service';
-import { SettingsService } from 'src/app/demo/service/settings.service';
-import { filter } from 'rxjs';
+import { LogListenerService } from 'src/app/main/service/logListener.service';
+import { SettingsService } from 'src/app/main/service/settings.service';
 
 @Component({
     selector: 'app-listener-settings',
@@ -161,6 +157,6 @@ export class ListenerSettingsComponent implements OnInit {
         }
     }
     saveSettings() {
-        console.log(this.findtimetype);
+        
     }
 }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { AbuseCheckResponse } from 'src/app/demo/models/abuse';
-import { AbuseService } from 'src/app/demo/service/abuse.service';
-import { LoadingService } from 'src/app/demo/service/util/loading.service';
-import { getCountryNameByCountryCode } from 'src/app/demo/util/country-util';
+import { AbuseCheckResponse } from 'src/app/main/models/abuse';
+import { AbuseService } from 'src/app/main/service/abuse.service';
+import { LoadingService } from 'src/app/main/service/util/loading.service';
+import { getCountryNameByCountryCode } from 'src/app/main/util/country-util';
 
 @Component({
     templateUrl: './abuse-check.component.html',

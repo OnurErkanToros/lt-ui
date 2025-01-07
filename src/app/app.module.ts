@@ -8,7 +8,7 @@ import {
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
+import { NotfoundComponent } from './main/components/notfound/notfound.component';
 import { DataViewModule } from 'primeng/dataview';
 import { MessageService } from 'primeng/api';
 import localeTr from '@angular/common/locales/tr';
@@ -18,7 +18,7 @@ import { HttpErrorInterceptor } from './interceptors/http-error';
 import { ToastModule } from 'primeng/toast';
 import { LoadingInterceptor } from './interceptors/loading';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { AuthService } from './demo/service/auth.service';
+import { AuthService } from './main/service/auth.service';
 import { PermissionService } from './guards/auth.guard';
 registerLocaleData(localeTr);
 

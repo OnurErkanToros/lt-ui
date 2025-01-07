@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
-import { LoadingService } from '../demo/service/util/loading.service';
+import { LoadingService } from '../main/service/util/loading.service';
 
 @Injectable({
     providedIn: 'root',

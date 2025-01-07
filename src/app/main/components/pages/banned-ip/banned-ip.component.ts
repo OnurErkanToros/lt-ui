@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { dA } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
 import { forkJoin, of } from 'rxjs';
-import { BanIpRequest, BannedIpResponse } from 'src/app/demo/models/banned-ip';
-import { AbuseService } from 'src/app/demo/service/abuse.service';
-import { BannedIpService } from 'src/app/demo/service/banned-ip.service';
-import { SuspectIpService } from 'src/app/demo/service/suspect-ip.service';
-import { LoadingService } from 'src/app/demo/service/util/loading.service';
+import { BanIpRequest, BannedIpResponse } from 'src/app/main/models/banned-ip';
+import { AbuseService } from 'src/app/main/service/abuse.service';
+import { BannedIpService } from 'src/app/main/service/banned-ip.service';
+import { SuspectIpService } from 'src/app/main/service/suspect-ip.service';
+import { LoadingService } from 'src/app/main/service/util/loading.service';
 
 @Component({
     selector: 'app-banned-ip',
