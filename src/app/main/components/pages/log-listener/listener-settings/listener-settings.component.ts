@@ -157,6 +157,36 @@ export class ListenerSettingsComponent implements OnInit {
         }
     }
     saveSettings() {
-        
+        const settings = [
+            { key: 'maxRetry', value: this.maxretry.toString() },
+            { key: 'findTime', value: this.findtime.toString() },
+            { key: 'findTimeType', value: this.findtimetype },
+            { key: 'logFilePath', value: this.logFilePath },
+            { key: 'confFilePath', value: this.blockConfPath },
+        ];
+    
+        this.loading = true;
+    
+        const updateObservables = settings.map((setting) =>
+            this.settingsService.updateSetting(setting.key, setting.value)
+        );
+    
+        // Ayarları kaydetmek için paralel olarak işlemleri çalıştır
+        Promise.all(updateObservables.map((obs) => obs.toPromise()))
+            .then(() => {
+                this.messageService.add({
+                    detail: 'Ayarlar başarıyla kaydedildi.',
+                    severity: 'success',
+                });
+            })
+            .catch(() => {
+                this.messageService.add({
+                    detail: 'Ayarları kaydederken bir sorun oluştu.',
+                    severity: 'error',
+                });
+            })
+            .finally(() => {
+                this.loading = false;
+            });
     }
 }

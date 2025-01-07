@@ -35,3 +35,9 @@ $gutter: 1rem; //for primeflex grid system
     height: 100%;
     background-color: rgba(0, 0, 0, 0.53) !important;
 }
+.transparent-button {
+    background-color: transparent !important; 
+    border-radius: 50% !important;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+}

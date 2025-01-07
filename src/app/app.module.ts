@@ -40,12 +40,12 @@ registerLocaleData(localeTr);
         { provide: LOCALE_ID, useValue: 'tr-TR' },
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: HttpErrorInterceptor,
+            useClass: LoadingInterceptor,
             multi: true,
         },
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: LoadingInterceptor,
+            useClass: HttpErrorInterceptor,
             multi: true,
         },
     ],

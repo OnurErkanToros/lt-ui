@@ -34,10 +34,11 @@ export class SettingsService {
         );
     }
     updateSetting(key: string, value: string): Observable<SettingResponse> {
+        let params = new HttpParams().set('key', key).set('value', value);
         return this.httpClient.patch(
-            this.apiUrl + 'update/' + key + '/' + value,
+            this.apiUrl + 'update',
             null,
-            { headers: this.authService.getHeaders() }
+            { headers: this.authService.getHeaders(), params:params }
         );
     }
 }
