@@ -1,4 +1,3 @@
-<p-toast />
 <p-card header="Abuse IP Kontrolü">
     <p>
         Bu ekrandan Abuse ekranlarına gitmeden sorgulama yapabilirsiniz ve
@@ -31,81 +30,63 @@
     [(visible)]="visible"
     draggable="false"
     maximizable="true"
+    class="ip-info-dialog"
 >
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>IP Adresi:</strong></label>
-        <span>{{ abuseCheckResponse.ipAddress }}</span>
+    <div class="ip-dialog-content">
+        <div class="ip-info-row">
+            <label><strong>IP Adresi:</strong></label>
+            <span>{{ abuseCheckResponse.ipAddress }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>IP Versiyon:</strong></label>
+            <span>{{ abuseCheckResponse.ipVersion }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>İnternet Sağlayıcı:</strong></label>
+            <span>{{ abuseCheckResponse.isp }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Ülke:</strong></label>
+            <span>{{
+                getCountryNameByCountryCode(abuseCheckResponse.countryCode)
+            }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Toplam Raporlama Sayısı:</strong></label>
+            <span>{{ abuseCheckResponse.totalReports }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Kaç Farklı Kişi Raporladı:</strong></label>
+            <span>{{ abuseCheckResponse.numDistinctUsers }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Abuse Risk Puanı:</strong></label>
+            <span>{{ abuseCheckResponse.abuseConfidenceScore }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Domain:</strong></label>
+            <span>{{ abuseCheckResponse.domain }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Public mi?:</strong></label>
+            <span>{{ abuseCheckResponse.isPublic ? "Evet" : "Hayır" }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Tor mu?:</strong></label>
+            <span>{{ abuseCheckResponse.isTor ? "Evet" : "Hayır" }}</span>
+        </div>
+        <div class="ip-info-row">
+            <label><strong>Abuse Beyaz Listesinde mi?:</strong></label>
+            <span>{{
+                abuseCheckResponse.isWhitelisted ? "Evet" : "Hayır"
+            }}</span>
+        </div>
     </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"
-            ><strong>IP Versiyon:</strong></label
-        >
-        <span>{{ abuseCheckResponse.ipVersion }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"
-            ><strong>İnternet Sağlayıcı:</strong></label
-        >
-        <span>{{ abuseCheckResponse.isp }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Ülke:</strong></label>
-        <span>{{
-            getCountryNameByCountryCode(abuseCheckResponse.countryCode)
-        }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"
-            ><strong>Toplam Raporlama Sayısı:</strong></label
-        >
-        <span>{{ abuseCheckResponse.totalReports }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"
-            ><strong>Kaç Farklı Kişi Raporladı:</strong></label
-        >
-        <span>{{ abuseCheckResponse.numDistinctUsers }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"
-            ><strong>Abuse Risk Puanı:</strong></label
-        >
-        <span>{{ abuseCheckResponse.abuseConfidenceScore }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Domain:</strong></label>
-        <span>{{ abuseCheckResponse.domain }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Public mi?:</strong></label>
-        <span>{{
-            abuseCheckResponse.isPublic === true ? "Evet" : "Hayır"
-        }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"><strong>Tor mu?:</strong></label>
-        <span>{{ abuseCheckResponse.isTor === true ? "Evet" : "Hayır" }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"
-            ><strong>Abuse Beyaz Listesinde mi?:</strong></label
-        >
-        <span>{{
-            abuseCheckResponse.isWhitelisted === true ? "Evet" : "Hayır"
-        }}</span>
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label class="font-semibold w-6rem"
-            ><strong>Abuse Beyaz Listesinde mi?:</strong></label
-        >
-        <span>{{
-            abuseCheckResponse.isWhitelisted === true ? "Evet" : "Hayır"
-        }}</span>
-    </div>
-    <div class="flex justify-content-end gap-2">
+    <div class="ip-dialog-footer">
         <p-button
-            label="Listeye Ekle"
-            (click)="prepareCheckIpForBan(abuseCheckResponse.ipAddress)"
-        />
+            label="Engelle"
+            class="p-button-danger"
+            (click)="banCheckIp(abuseCheckResponse.ipAddress)"
+        ></p-button>
     </div>
 </p-dialog>

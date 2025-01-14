@@ -4,6 +4,7 @@ import { filter, Subscription } from 'rxjs';
 import { LayoutService } from './service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
+import { LoadingService } from '../main/service/util/loading.service';
 
 @Component({
     selector: 'app-layout',
@@ -15,6 +16,7 @@ export class AppLayoutComponent implements OnDestroy {
     menuOutsideClickListener: any;
 
     profileMenuOutsideClickListener: any;
+    loading$ = this.loadingService.loading$;
 
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
@@ -23,7 +25,8 @@ export class AppLayoutComponent implements OnDestroy {
     constructor(
         public layoutService: LayoutService,
         public renderer: Renderer2,
-        public router: Router
+        public router: Router,
+        private loadingService: LoadingService
     ) {
         this.overlayMenuOpenSubscription =
             this.layoutService.overlayOpen$.subscribe(() => {

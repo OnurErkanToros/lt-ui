@@ -8,4 +8,5 @@ export interface BannedIpResponse {
 
 export interface BanIpRequest {
     ip?: string;
+    ipType?: string;
 }

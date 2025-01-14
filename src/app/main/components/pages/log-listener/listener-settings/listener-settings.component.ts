@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,NgZone} from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { catchError } from 'rxjs';
 import { LogListenerService } from 'src/app/main/service/logListener.service';
 import { SettingsService } from 'src/app/main/service/settings.service';
 
@@ -10,7 +11,6 @@ import { SettingsService } from 'src/app/main/service/settings.service';
 })
 export class ListenerSettingsComponent implements OnInit {
     checked: boolean = false;
-    loading = false;
     findtimetype: string;
     findtime: number;
     maxretry: number;
@@ -22,6 +22,7 @@ export class ListenerSettingsComponent implements OnInit {
         { name: 'Dakika', value: 'minute' },
         { name: 'Saniye', value: 'second' },
     ];
+    ngZone: NgZone = new NgZone({ enableLongStackTrace: false });
     constructor(
         private loglistenerService: LogListenerService,
         private messageService: MessageService,
@@ -33,10 +34,8 @@ export class ListenerSettingsComponent implements OnInit {
     }
 
     loadChecked() {
-        this.loading = true;
         this.loglistenerService.status().subscribe({
             next: (data) => {
-                console.log(data);
                 if (data) {
                     if (data.status === 'STARTED') {
                         this.checked = true;
@@ -49,7 +48,6 @@ export class ListenerSettingsComponent implements OnInit {
                         severity: 'error',
                     });
                 }
-                this.loading = false;
             },
         });
     }
@@ -61,42 +59,63 @@ export class ListenerSettingsComponent implements OnInit {
         }
     }
     startListener() {
-        this.loading = true;
         this.loglistenerService.start().subscribe({
             next: (data) => {
-                if (data) {
-                    this.checked = true;
-                    this.messageService.add({
-                        detail: 'Başarıyla başlatıldı.',
-                        severity: 'success',
-                    });
-                } else {
+                this.ngZone.run(() => { // Angular'ın algılama mekanizmasını tetikle
+                    if (data) {
+                        this.checked = true;
+                        this.messageService.add({
+                            detail: 'Başarıyla başlatıldı.',
+                            severity: 'success',
+                        });
+                    } else {
+                        this.checked = false;
+                        this.messageService.add({
+                            detail: 'Bir sorun oluştu!',
+                            severity: 'error',
+                        });
+                    }
+                });
+            },
+            error: () => {
+                this.ngZone.run(() => {
+                    this.checked = false;
                     this.messageService.add({
                         detail: 'Bir sorun oluştu!',
                         severity: 'error',
                     });
-                }
-                this.loading = false;
+                });
             },
         });
     }
+
     stopListener() {
-        this.loading = true;
         this.loglistenerService.stop().subscribe({
             next: (data) => {
-                if (data) {
-                    this.checked = false;
-                    this.messageService.add({
-                        detail: 'Başarıyla durduruldu.',
-                        severity: 'success',
-                    });
-                } else {
+                this.ngZone.run(() => {
+                    if (data) {
+                        this.checked = false;
+                        this.messageService.add({
+                            detail: 'Başarıyla durduruldu.',
+                            severity: 'success',
+                        });
+                    } else {
+                        this.checked = true;
+                        this.messageService.add({
+                            detail: 'Bir sorun oluştu!',
+                            severity: 'error',
+                        });
+                    }
+                });
+            },
+            error: () => {
+                this.ngZone.run(() => {
+                    this.checked = true;
                     this.messageService.add({
                         detail: 'Bir sorun oluştu!',
                         severity: 'error',
                     });
-                }
-                this.loading = false;
+                });
             },
         });
     }
@@ -104,7 +123,7 @@ export class ListenerSettingsComponent implements OnInit {
     loadSettings() {
         this.settingsService.getAllBySettingType('LOG_LISTENER').subscribe({
             next: (data) => {
-                if (data.length > 0) {
+                if (data.length > 4) {
                     this.isDisabled = false;
                     const maxRetrySetting = data.find(
                         (setting) => setting.key === 'maxRetry'
@@ -143,6 +162,14 @@ export class ListenerSettingsComponent implements OnInit {
                     if (this.findtimetype) {
                         this.setDefaultFindtimeType(this.findtimetype);
                     }
+                } else {
+                    this.settingsService.createSettings().subscribe({
+                        next: (data) => {
+                            if (data) {
+                                this.loadSettings();
+                            }
+                        },
+                    });
                 }
             },
         });
@@ -164,29 +191,29 @@ export class ListenerSettingsComponent implements OnInit {
             { key: 'logFilePath', value: this.logFilePath },
             { key: 'confFilePath', value: this.blockConfPath },
         ];
-    
-        this.loading = true;
-    
+
         const updateObservables = settings.map((setting) =>
             this.settingsService.updateSetting(setting.key, setting.value)
         );
-    
-        // Ayarları kaydetmek için paralel olarak işlemleri çalıştır
+
         Promise.all(updateObservables.map((obs) => obs.toPromise()))
             .then(() => {
                 this.messageService.add({
                     detail: 'Ayarlar başarıyla kaydedildi.',
                     severity: 'success',
                 });
+                if (this.checked) {
+                    this.stopListener();
+                    setTimeout(() => {
+                        this.startListener();
+                    }, 500);
+                }
             })
             .catch(() => {
                 this.messageService.add({
                     detail: 'Ayarları kaydederken bir sorun oluştu.',
                     severity: 'error',
                 });
-            })
-            .finally(() => {
-                this.loading = false;
             });
     }
 }

@@ -5,6 +5,8 @@ import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
 import { Page } from '../models/page';
 import { BannedIpResponse } from '../models/banned-ip';
+import { BanRequest } from '../models/ban';
+import { Result } from '../models/result';
 
 @Injectable({
     providedIn: 'root',
@@ -47,5 +49,20 @@ export class BannedIpService {
         return this.httpClient.post<boolean>(this.apiUrl + 'sync', null, {
             headers: this.authService.getHeaders(),
         });
+    }
+
+    ban(banRequestList:BanRequest[]): Observable<Result[]> {
+        return this.httpClient.post<Result[]>(
+            this.apiUrl + 'ban',
+            banRequestList,
+            { headers: this.authService.getHeaders() }
+        );
+    }
+    unban(banRequestList:BanRequest[]): Observable<Result[]> {
+        return this.httpClient.post<Result[]>(
+            this.apiUrl + 'unban',
+            banRequestList,
+            { headers: this.authService.getHeaders() }
+        );
     }
 }

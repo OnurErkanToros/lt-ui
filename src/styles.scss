@@ -15,7 +15,7 @@ $gutter: 1rem; //for primeflex grid system
 
 .progress-spinner {
     position: fixed;
-    z-index: 999;
+    z-index: 9999;
     height: 2em;
     width: 2em;
     overflow: show;
@@ -41,3 +41,118 @@ $gutter: 1rem; //for primeflex grid system
     border: 1px solid #ccc;
     padding: 0.5rem;
 }
+.ip-info-dialog {
+    width: 600px;
+    max-width: 90%;
+  }
+  
+  .ip-dialog-content {
+    padding: 1rem;
+  }
+  
+  .ip-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .ip-info-row:last-child {
+    border-bottom: none;
+  }
+  
+  .ip-info-row label {
+    font-weight: bold;
+    width: 200px;
+  }
+  
+  .ip-info-row span {
+    text-align: left;
+    flex: 1;
+  }
+  
+  .ip-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 0;
+  }
+  .ip-detail-dialog {
+    width: 700px;
+    max-width: 90%;
+  }
+  
+  .ip-detail-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .ip-fieldset {
+    border: 1px solid #ddd !important;
+    border-radius: 6px;
+    padding: 1rem !important;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ip-fieldset legend {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .ip-fieldset p {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+  }
+  
+  .ip-fieldset .m-0 {
+    margin: 0;
+  }
+  .ip-detail-dialog {
+    width: 600px;
+    max-width: 90%;
+  }
+  
+  .ip-detail-content {
+    padding: 1rem;
+  }
+  
+  .ip-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .ip-detail-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .ip-detail-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .ip-detail-label {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.95rem;
+    flex-basis: 40%;
+    text-align: left;
+  }
+  
+  .ip-detail-value {
+    flex-basis: 60%;
+    text-align: right;
+    font-size: 0.95rem;
+    color: #555;
+    word-wrap: break-word;
+  }
+      

@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:1999/lt-api/1.0/',
+    apiUrl: 'http://192.168.1.153:1999/lt-api/1.0/',
 };

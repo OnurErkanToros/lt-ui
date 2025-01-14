@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { el, er } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
 import { AbuseCheckResponse } from 'src/app/main/models/abuse';
 import { BanIpRequest } from 'src/app/main/models/banned-ip';
-import { Page } from 'src/app/main/models/page';
-import { DataResult } from 'src/app/main/models/result';
 import { SuspectIpResponse } from 'src/app/main/models/suspectIp';
 import { AbuseService } from 'src/app/main/service/abuse.service';
+import { BannedIpService } from 'src/app/main/service/banned-ip.service';
 import { SuspectIpService } from 'src/app/main/service/suspect-ip.service';
 import { getCountryNameByCountryCode } from 'src/app/main/util/country-util';
 
 @Component({
     selector: 'app-listener-caughts',
     templateUrl: './listener-caughts.component.html',
-    providers: [MessageService],
 })
 export class ListenerCaughtsComponent implements OnInit {
     suspectIpList?: SuspectIpResponse[];
@@ -22,7 +19,6 @@ export class ListenerCaughtsComponent implements OnInit {
     selectedSuspectIp: SuspectIpResponse = {};
     abuseCheckResponse: AbuseCheckResponse = {};
     banIpRequestList: BanIpRequest[] = [];
-    loading = false;
     visibleDetail = false;
     visibleAbuseDetail = false;
     first = 0;
@@ -61,7 +57,8 @@ export class ListenerCaughtsComponent implements OnInit {
         private suspectIpService: SuspectIpService,
         private messageService: MessageService,
         private abuseService: AbuseService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private banService: BannedIpService
     ) {
         this.searchFormGroup = formBuilder.group({
             ip: [''],
@@ -71,7 +68,6 @@ export class ListenerCaughtsComponent implements OnInit {
     }
 
     loadData() {
-        this.loading = true;
         this.suspectIpService
             .getFiltered(this.page, this.size, this.searchCriteria)
             .subscribe({
@@ -85,52 +81,50 @@ export class ListenerCaughtsComponent implements OnInit {
                             detail: 'Bir sorun oluştu!',
                         });
                     }
-                    this.loading = false;
                 },
             });
     }
     setBanSuspectIp() {
         this.prepareBadRequestIpList();
-        this.suspectIpService
-            .setBanSuspectIps(this.banIpRequestList)
-            .subscribe({
-                next: (data) => {
-                    if (data) {
-                        this.messageService.add({
-                            severity: 'success',
-                            detail: 'Seçilenler banlandı.',
-                        });
-                        this.loadData();
-                        this.selectedSuspectIpList = [];
-                    } else {
-                        this.messageService.add({
-                            severity: 'error',
-                            detail: 'Bir sorun oluştu!',
-                        });
-                    }
-                },
-            });
-    }
-
-    setUnbanSuspectIp() {
-        this.prepareBadRequestIpList();
-        this.suspectIpService
-            .setUnBanSuspectIps(this.banIpRequestList)
-            .subscribe({
-                next: (data) => {
-                    this.messageService.add({
-                        severity: 'success',
-                        detail: 'Seçilenlerin banı kaldırıldı.',
+        this.banService.ban(this.banIpRequestList).subscribe({
+            next: (data) => {
+                if (data) {
+                    data.forEach((element) => {
+                        if (element.success) {
+                            this.messageService.add({
+                                severity: 'success',
+                                detail: element.message,
+                            });
+                        } else {
+                            this.messageService.add({
+                                severity: 'error',
+                                detail: element.message,
+                            });
+                        }
                     });
-                    this.loadData();
-                    this.selectedSuspectIpList = [];
-                },
-            });
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        detail: 'Bir sorun oluştu!',
+                    });
+                }
+            },
+            complete: () => {
+                this.loadData();
+                this.banIpRequestList = [];
+                this.selectedSuspectIpList = [];
+            },
+        });
     }
 
     prepareBadRequestIpList() {
         this.selectedSuspectIpList.forEach((element) => {
-            this.banIpRequestList.push({ ip: element.ip });
+            if (element.status !== 'BANNED') {
+                this.banIpRequestList.push({
+                    ip: element.ip,
+                    ipType: 'LISTENER',
+                });
+            }
         });
     }
 
@@ -167,26 +161,8 @@ export class ListenerCaughtsComponent implements OnInit {
         this.loadData();
     }
 
-    getSelectedIpListType(): string {
-        if (
-            this.selectedSuspectIpList.some(
-                (selected) => selected.status === 'BANNED'
-            )
-        ) {
-            console.log('banned');
-            return 'BANNED';
-        } else if (
-            this.selectedSuspectIpList.some(
-                (selected) => selected.status === 'NEW'
-            ) ||
-            this.selectedSuspectIpList.some(
-                (selected) => selected.status === 'CANCEL_BAN'
-            )
-        ) {
-            console.log('new');
-            return 'NEW';
-        } else {
-            return '';
-        }
+    isRowSelectable(suspect: any): boolean {
+        console.log(suspect);
+        return suspect.status === 'NEW' || suspect.status === 'CANCEL_BAN';
     }
 }

@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { dA } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
-import { forkJoin, of } from 'rxjs';
 import { BanIpRequest, BannedIpResponse } from 'src/app/main/models/banned-ip';
-import { AbuseService } from 'src/app/main/service/abuse.service';
 import { BannedIpService } from 'src/app/main/service/banned-ip.service';
-import { SuspectIpService } from 'src/app/main/service/suspect-ip.service';
-import { LoadingService } from 'src/app/main/service/util/loading.service';
 
 @Component({
     selector: 'app-banned-ip',
@@ -17,7 +12,6 @@ import { LoadingService } from 'src/app/main/service/util/loading.service';
 export class BannedIpComponent implements OnInit {
     bannedIpList: BannedIpResponse[] = [];
     selectedBannedIpList: BannedIpResponse[] = [];
-    loading$ = this.loadingService.loading$;
     visible = false;
     first = 0;
     size: number = 10;
@@ -40,10 +34,7 @@ export class BannedIpComponent implements OnInit {
     constructor(
         private bannedIpService: BannedIpService,
         private messageService: MessageService,
-        private loadingService: LoadingService,
-        private formBuilder: FormBuilder,
-        private abuseService: AbuseService,
-        private suspectService: SuspectIpService
+        private formBuilder: FormBuilder
     ) {
         this.searchFormGroup = formBuilder.group({
             ip: [''],
@@ -87,37 +78,30 @@ export class BannedIpComponent implements OnInit {
     }
 
     setUnbanIPList() {
-        let checkList: BanIpRequest[] = [];
-        let listenerList: BanIpRequest[] = [];
-
-        this.selectedBannedIpList.forEach((ipRequest) => {
-            if (ipRequest.ipType === 'CHECK') {
-                checkList.push({ ip: ipRequest.ip });
-            } else if (ipRequest.ipType === 'LISTENER') {
-                listenerList.push({ ip: ipRequest.ip });
-            }
+        let ipList: BanIpRequest[] = [];
+        this.selectedBannedIpList.forEach((bannedIp) => {
+            ipList.push({
+                ip: bannedIp.ip,
+                ipType: bannedIp.ipType,
+            });
         });
-
-        const checkListObservable =
-            checkList.length > 0
-                ? this.abuseService.setUnbanIpList(checkList)
-                : of(null); // Eğer liste boşsa boş bir observable döner
-        const listenerListObservable =
-            listenerList.length > 0
-                ? this.suspectService.setUnBanSuspectIps(listenerList)
-                : of(null);
-
-        forkJoin([checkListObservable, listenerListObservable]).subscribe({
-            next: () => {
-                console.log('Her iki işlem tamamlandı!');
-                checkList = [];
-                listenerList = [];
-                this.selectedBannedIpList = [];
-                this.loadBannedIpList();
+        this.bannedIpService.unban(ipList).subscribe({
+            next: (data) => {
+                if (data) {
+                    this.messageService.add({
+                        severity: 'success',
+                        detail: 'IP ban kaldırıldı.',
+                    });
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        detail: 'IP ban kaldırılamadı.',
+                    });
+                }
             },
-            error: (err) => {
-                console.error('Bir işlem başarısız oldu:', err);
-                // Hata durumunda gösterilecek mesaj
+            complete: () => {
+                this.loadBannedIpList();
+                this.selectedBannedIpList = [];
             },
         });
     }

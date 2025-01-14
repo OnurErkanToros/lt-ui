@@ -12,6 +12,7 @@ import { ListenerCaughtsComponent } from './listener-caughts.component';
 import { ListenerCaughtsRoutingModule } from './listener-caughts-routing.module';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
         FieldsetModule,
         ReactiveFormsModule,
         SelectButtonModule,
+        PaginatorModule
     ],
     declarations: [ListenerCaughtsComponent],
 })

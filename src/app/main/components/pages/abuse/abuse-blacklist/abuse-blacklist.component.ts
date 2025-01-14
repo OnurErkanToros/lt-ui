@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AbuseBlackListResponse } from 'src/app/main/models/abuse';
 import { AbuseService } from 'src/app/main/service/abuse.service';
-import { LoadingService } from 'src/app/main/service/util/loading.service';
 import { getCountryNameByCountryCode } from 'src/app/main/util/country-util';
 @Component({
     templateUrl: './abuse-blacklist.component.html',
@@ -16,11 +15,9 @@ export class AbuseBlacklistComponent implements OnInit {
     page: number = 0;
     rows = 1;
     totalRecords = 0;
-    loading$ = this.loadingService.loading$;
     constructor(
         private abuseService: AbuseService,
         private messageService: MessageService,
-        private loadingService: LoadingService
     ) {}
 
     ngOnInit() {

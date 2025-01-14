@@ -72,19 +72,4 @@ export class AbuseService {
             { headers: this.authService.getHeaders() }
         );
     }
-    prepareCheckIpForBanning(banIpRequest: BanIpRequest): Observable<boolean> {
-        return this.httpclient.post<boolean>(
-            this.apiUrl + 'check-ip/ban',
-            banIpRequest,
-            { headers: this.authService.getHeaders() }
-        );
-    }
-
-    setUnbanIpList(banIpRequestList: BanIpRequest[]): Observable<boolean> {
-        return this.httpclient.post<boolean>(
-            this.apiUrl + 'check-ip/unban',
-            banIpRequestList,
-            { headers: this.authService.getHeaders() }
-        );
-    }
 }

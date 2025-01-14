@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AbuseCheckResponse } from 'src/app/main/models/abuse';
 import { AbuseService } from 'src/app/main/service/abuse.service';
-import { LoadingService } from 'src/app/main/service/util/loading.service';
+import { BannedIpService } from 'src/app/main/service/banned-ip.service';
 import { getCountryNameByCountryCode } from 'src/app/main/util/country-util';
 
 @Component({
@@ -11,13 +11,12 @@ import { getCountryNameByCountryCode } from 'src/app/main/util/country-util';
 })
 export class AbuseCheckComponent {
     ipAddress: string = '';
-    loading$ = this.loadingService.loading$;
     abuseCheckResponse: AbuseCheckResponse = {};
     visible = false;
     constructor(
         private messageService: MessageService,
         private abuseService: AbuseService,
-        private loadingService: LoadingService
+        private banService: BannedIpService
     ) {}
 
     checkIpAddress(event: MouseEvent) {
@@ -45,18 +44,18 @@ export class AbuseCheckComponent {
         }
     }
 
-    prepareCheckIpForBan(ip: string) {
-        this.abuseService.prepareCheckIpForBanning({ ip: ip }).subscribe({
+    banCheckIp(ip: string) {
+        this.banService.ban([{ ip: ip, ipType: 'CHECK' }]).subscribe({
             next: (data) => {
-                if (data) {
+                if (data[0].success) {
                     this.messageService.add({
-                        detail: 'Banlanacaklar listesine eklendi.',
                         severity: 'success',
+                        detail: 'IP banlandı.',
                     });
                 } else {
                     this.messageService.add({
-                        detail: 'Banlanacaklar listesine eklenemedi.',
                         severity: 'error',
+                        detail: 'IP banlanamadı.' + data[0].message,
                     });
                 }
             },

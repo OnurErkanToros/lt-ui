@@ -26,10 +26,14 @@ export class ServerService {
             options
         );
     }
-    sendBlockConf(): Observable<Result[]> {
-        return this.httpclient.get<Result[]>(this.apiUrl + 'sendBlockConf', {
-            headers: this.authService.getHeaders(),
-        });
+    sendBlockConf(selectedServers: ServerResponse[]): Observable<Result[]> {
+        return this.httpclient.post<Result[]>(
+            this.apiUrl + 'send-server',
+            selectedServers,
+            {
+                headers: this.authService.getHeaders(),
+            }
+        );
     }
     getAllServer(): Observable<ServerResponse[]> {
         return this.httpclient.get<ServerResponse[]>(this.apiUrl + 'get-all', {
@@ -51,5 +55,20 @@ export class ServerService {
             this.apiUrl + 'delete',
             options
         );
+    }
+    updateServer(
+        id: number,
+        serverRequest: ServerRequest
+    ): Observable<ServerResponse> {
+        {
+            const options = {
+                headers: this.authService.getHeaders(),
+            };
+            return this.httpclient.patch<ServerResponse>(
+                this.apiUrl + 'update/' + id,
+                serverRequest,
+                options
+            );
+        }
     }
 }

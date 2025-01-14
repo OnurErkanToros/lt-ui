@@ -1,17 +1,19 @@
 export interface ServerRequest {
     id?: number;
     name?: string;
-    url?: string;
+    host?: string;
     username?: string;
     password?: string;
     port?: number;
     remoteFilePath?: string;
     fileName?: string;
+    isActive?:boolean;
+    isSFTP?:boolean;
 }
 export interface ServerResponse {
     id: number;
     name?: string;
-    url?: string;
+    host?: string;
     username?: string;
     password?: string;
     port?: number;
@@ -19,5 +21,6 @@ export interface ServerResponse {
     fileName?: string;
     createdAt?: Date;
     createdBy?: string;
-    active?: string;
+    isActive?: boolean;
+    isSFTP?:boolean;
 }

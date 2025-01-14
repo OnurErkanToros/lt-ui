@@ -6,7 +6,6 @@ import {
     AbuseDbKeyResponse,
 } from 'src/app/main/models/abuse';
 import { AbuseKeyService } from 'src/app/main/service/abuseKey.service';
-import { LoadingService } from 'src/app/main/service/util/loading.service';
 
 @Component({
     selector: 'app-abuse-key',
@@ -15,13 +14,11 @@ import { LoadingService } from 'src/app/main/service/util/loading.service';
 })
 export class AbuseKeyComponent implements OnInit {
     abuseKeys: AbuseDbKeyResponse[] = [];
-    loading$ = this.loadingService.loading$;
     visible = false;
     abuseRequest: AbuseDbKeyRequest = {};
     constructor(
         private abuseKeyService: AbuseKeyService,
-        private messageService: MessageService,
-        private loadingService: LoadingService
+        private messageService: MessageService
     ) {}
     ngOnInit(): void {
         this.loadAbuseKeys();

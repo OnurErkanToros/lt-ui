@@ -13,7 +13,7 @@ export class AppMenuComponent implements OnInit {
 
     ngOnInit() {
         this.model = [
-            {
+            /*{
                 label: 'Anasayfa',
                 items: [
                     {
@@ -23,7 +23,7 @@ export class AppMenuComponent implements OnInit {
                     },
                 ],
             },
-
+*/
             {
                 label: 'Ip Kontrol',
                 icon: 'pi pi-fw pi-briefcase',
@@ -32,11 +32,11 @@ export class AppMenuComponent implements OnInit {
                         label: 'Abuse',
                         icon: 'pi pi-fw pi-ban',
                         items: [
-                            {
+                            /*{
                                 label: 'Karaliste',
                                 icon: 'pi pi-fw pi-times-circle',
                                 routerLink: ['/pages/abuse/blacklist'],
-                            },
+                            },*/
                             {
                                 label: 'Sorgulama',
                                 icon: 'pi pi-fw pi-search',

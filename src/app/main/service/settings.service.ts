@@ -41,4 +41,11 @@ export class SettingsService {
             { headers: this.authService.getHeaders(), params:params }
         );
     }
+    createSettings():Observable<boolean>{
+        return this.httpClient.post<boolean>(
+            this.apiUrl + 'create-settings',
+            null,
+            { headers: this.authService.getHeaders() }
+        );
+    }
 }
