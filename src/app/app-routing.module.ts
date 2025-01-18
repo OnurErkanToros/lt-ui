@@ -4,6 +4,7 @@ import { NotfoundComponent } from './main/components/notfound/notfound.component
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NoAuthGuard } from './guards/no-auth.guard';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     imports: [

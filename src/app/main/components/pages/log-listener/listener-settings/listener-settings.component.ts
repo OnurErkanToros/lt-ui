@@ -61,7 +61,7 @@ export class ListenerSettingsComponent implements OnInit {
     startListener() {
         this.loglistenerService.start().subscribe({
             next: (data) => {
-                this.ngZone.run(() => { // Angular'ın algılama mekanizmasını tetikle
+                this.ngZone.run(() => {
                     if (data) {
                         this.checked = true;
                         this.messageService.add({

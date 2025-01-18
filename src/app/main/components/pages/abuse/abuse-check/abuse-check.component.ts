@@ -7,7 +7,6 @@ import { getCountryNameByCountryCode } from 'src/app/main/util/country-util';
 
 @Component({
     templateUrl: './abuse-check.component.html',
-    providers: [MessageService],
 })
 export class AbuseCheckComponent {
     ipAddress: string = '';
@@ -31,15 +30,27 @@ export class AbuseCheckComponent {
                         } else {
                             this.messageService.add({
                                 severity: 'error',
+                                summary: 'Hata',
                                 detail: 'Sorgulama başarısız.',
+                                life: 3000
                             });
                         }
                     },
+                    error: (err) => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Hata',
+                            detail: 'Bir hata oluştu: ' + err.message,
+                            life: 3000
+                        });
+                    }
                 });
         } else {
             this.messageService.add({
                 severity: 'warn',
+                summary: 'Uyarı',
                 detail: 'Lütfen geçerli bir IP adresi girin!',
+                life: 3000
             });
         }
     }
