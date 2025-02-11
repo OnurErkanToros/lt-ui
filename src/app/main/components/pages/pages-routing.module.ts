@@ -60,6 +60,13 @@ import { RouterModule } from '@angular/router';
                         (m) => m.BannedIpModule
                     ),
             },
+            {
+                path: 'country',
+                loadChildren: () =>
+                    import('./country/country.module').then(
+                        (m) => m.CountryModule
+                )
+            },
             { path: '**', redirectTo: '/notfound' },
         ]),
     ],

@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ServerComponent } from './server.component';
 import { DataViewModule } from 'primeng/dataview';
-import { ServerRoutingModule } from './server-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -13,13 +11,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { PasswordModule } from 'primeng/password';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { CountryComponent } from './country.component';
+import { CountryRoutingModule } from './country-routing.module';
 import { CardModule } from 'primeng/card';
+import { PickListModule } from 'primeng/picklist';
+
 
 @NgModule({
     imports: [
         CommonModule,
         DataViewModule,
-        ServerRoutingModule,
+        CountryRoutingModule,
         ButtonModule,
         ToastModule,
         ToolbarModule,
@@ -31,8 +33,9 @@ import { CardModule } from 'primeng/card';
         ReactiveFormsModule,
         PasswordModule,
         ToggleButtonModule,
-        CardModule
+        CardModule,
+        PickListModule
     ],
-    declarations: [ServerComponent],
+    declarations: [CountryComponent],
 })
-export class ServerModule {}
+export class CountryModule {}

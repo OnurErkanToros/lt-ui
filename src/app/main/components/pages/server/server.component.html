@@ -1,3 +1,5 @@
+
+
 <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
         <p-button
@@ -20,7 +22,7 @@
         />
     </ng-template>
 </p-toolbar>
-
+<p-card>
 <p-table
     #dt
     [value]="servers"
@@ -112,7 +114,7 @@
         </div>
     </ng-template>
 </p-table>
-
+</p-card>
 <p-dialog
     [header]="serverId ? 'Sunucuyu Güncelle' : 'Yeni Sunucu Ekle'"
     [modal]="true"

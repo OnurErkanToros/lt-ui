@@ -1,0 +1,40 @@
+<p-card>
+    <p-pickList 
+    [source]="denyCountries" 
+    [target]="allowCountries" 
+    sourceHeader="Engellenen Ülkeler" 
+    targetHeader="İzin Verilen Ülkeler" 
+    [dragdrop]="true" 
+    [responsive]="true" 
+    [sourceStyle]="{ height: '40rem' }"
+    [targetStyle]="{ height: '40rem' }"
+    showSourceControls="false"
+    showTargetControls="false"
+    dragdrop="false"
+    filterBy="countryName" 
+    sourceFilterPlaceholder="Ülke ismine göre ara" 
+    targetFilterPlaceholder="Ülke ismine göre ara"
+    (onMoveToSource)="moveToSource($event)"
+    (onMoveToTarget)="moveToTarget($event)"
+    (onMoveAllToSource)="moveAllToSource($event)"
+    (onMoveAllToTarget)="moveAllToTarget($event)"
+    breakpoint="1400px">
+        <ng-template let-country pTemplate="item">
+            <div class="flex flex-wrap p-2 align-items-center gap-3">
+                <img 
+                    class="w-4rem shadow-2 flex-shrink-0 border-round" 
+                    src="https://flagsapi.com/{{country.isoCode}}/flat/64.png" 
+                    alt="{{country.countryName}}" />
+                <div class="flex-1 flex flex-column gap-2">
+                    <span class="font-bold">{{ country.countryName }}</span>
+                    <div class="flex align-items-center gap-2">
+                        <i class="pi pi-globe text-sm"></i>
+                        <span>
+                            {{ country.isoCode }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+</p-pickList>
+</p-card>
